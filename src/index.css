@@ -1,0 +1,16 @@
+.novaVest {
+    width: 100px;
+    height: 50px;
+    background: yellow;
+    color: red;
+    text-align: center;
+    line-height: 50px;
+}
+.homepageBtn {
+    width: 100px;
+    height: 50px;
+    background: green;
+    color: white;
+    text-align: center;
+    line-height: 50px;
+}

@@ -1,6 +1,8 @@
+import HOST_BACKEND from './hostBackend.js';
+
 export async function getAllArticles() {
     try {
-        const response = await fetch('http://192.168.1.2:4000/allArticles');
+        const response = await fetch(`http://${HOST_BACKEND}:4000/allArticles`);
         const allNews = await response.json();
         return allNews
     }
@@ -11,7 +13,7 @@ export async function getAllArticles() {
 
 export async function getArticle(id) {
     try {
-        const response = await fetch(`http://192.168.1.2:4000/oneArticle/${id}`);        
+        const response = await fetch(`http://${HOST_BACKEND}:4000/oneArticle/${id}`);        
         return response
     }
     catch(err) {
@@ -20,7 +22,7 @@ export async function getArticle(id) {
 }
 export async function postArticle({id, title, subtitle, text, imgURL, imgName, dateUpdated, dateCreated, category, position}) {
     try {
-        const newArticle = await fetch(`http://192.168.1.2:4000/oneArticle/`, {
+        const newArticle = await fetch(`http://${HOST_BACKEND}:4000/oneArticle/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'text/plain'
@@ -45,7 +47,7 @@ export async function postArticle({id, title, subtitle, text, imgURL, imgName, d
 
 export async function updateArticle({id, title, subtitle, text, imgURL, imgName, position, category}) {
     try {
-        const updatedArticle = await fetch(`http://192.168.1.2:4000/oneArticle/${id}`, {
+        const updatedArticle = await fetch(`http://${HOST_BACKEND}:4000/oneArticle/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'text/plain'
@@ -69,7 +71,7 @@ export async function updateArticle({id, title, subtitle, text, imgURL, imgName,
 
 export async function deleteArticle(id) {
     try {
-        const articleToDelete = await fetch(`http://192.168.1.2:4000/oneArticle/${id}`, {
+        const articleToDelete = await fetch(`http://${HOST_BACKEND}:4000/oneArticle/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'text/plain'
@@ -83,7 +85,7 @@ export async function deleteArticle(id) {
 
 export async function getFrontpageNews() {
     try {
-        const response = await fetch('http://192.168.1.2:4000/frontpageArticles');
+        const response = await fetch(`http://${HOST_BACKEND}:4000/frontpageArticles`);
         const newsFrontpage = await response.json();
         return newsFrontpage
     }
@@ -95,7 +97,7 @@ export async function getFrontpageNews() {
 export async function updateArticlePosition(id, position) {
     try {
         console.log(id, position)
-        const updatedArticle = await fetch(`http://192.168.1.2:4000/articlePosition/${id}`, {
+        const updatedArticle = await fetch(`http://${HOST_BACKEND}:4000/articlePosition/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'text/plain'

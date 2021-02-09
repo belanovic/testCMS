@@ -5,6 +5,7 @@ export default function Photo({imgURL}) {
     const {articleImgLoaded, setArticleImgLoaded} = useContext(context);
     return (
         <img
+            className = "img"
             src={imgURL}
             alt="fotka"
             onLoad = {() => {

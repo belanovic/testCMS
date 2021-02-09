@@ -1,0 +1,95 @@
+.cms {
+    display: flex;
+    justify-content: space-around;
+}
+
+.vest-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.vest {
+    display: flex;
+    flex-direction: column;
+    width: 620px;
+}
+.vest-container > * {
+    margin: 1em;
+}
+
+img {
+    width: '620px';
+    height: 348px;
+    object-fit: cover;
+    object-position: center;
+    border: 1px solid black;
+    margin-bottom: 1em;
+}
+
+input {
+    height: 30px;
+    margin-bottom: 1em;
+    padding: 0.3em 1em;
+}
+.textarea {
+    height: 100px;
+    margin-bottom: 1em;
+    padding: 1em 1em;
+}
+input:focus, .textarea:focus {
+    outline: none;
+}
+button {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+button:hover {
+    cursor: pointer;
+}
+
+.listaVesti {
+    border: 1px solid red;
+    list-style-type: none;
+    width: 620px;
+    height: 750px;
+    display: flex;
+    flex-direction: column;
+}
+
+.loading {
+    font-size: 5rem;
+    color: black;
+    margin-top: 3em;
+}
+.item {
+    display: flex;
+    justify-content: space-between;
+}
+.time {
+    display: flex;
+}
+.time p {
+    margin-left: 2em;
+    margin-bottom: none;
+    font-weight: bold;
+}
+li {
+    border-bottom: 1px solid black;
+}
+.pagination {
+    margin-top: auto;
+    align-self: center;
+}
+
+.currentBtn {
+    background: yellow;
+}
+
+.preview {
+    border: 1px solid red;
+    width: 500px;
+}
+.preview p {
+    overflow-wrap: break-word;
+    font-size: 2rem;
+}

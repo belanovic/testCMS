@@ -46,6 +46,7 @@ export default function Article() {
         }
         const response = await getArticle(id);
         const selectedArticle = await response.json();
+        console.log(selectedArticle);
         setIsNewArticle(false);
         setTitle(selectedArticle.title);
         setSubtitle(selectedArticle.subtitle);

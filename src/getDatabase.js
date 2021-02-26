@@ -45,7 +45,7 @@ export async function postArticle({id, title, subtitle, text, imgURL, imgName, d
     }
 }
 
-export async function updateArticle({id, title, subtitle, text, imgURL, imgName, position, category}) {
+export async function updateArticle({id, title, subtitle, text, imgURL, imgName, position, category, published}) {
     try {
         const updatedArticle = await fetch(`${HOST_BACKEND}/oneArticle/${id}`, {
             method: 'PUT',
@@ -60,7 +60,8 @@ export async function updateArticle({id, title, subtitle, text, imgURL, imgName,
                 imgName: imgName,
                 dateUpdated: Date.now(),
                 category: category,
-                position: position
+                position: position,
+                published: published
             })
         })
     }

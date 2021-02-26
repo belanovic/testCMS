@@ -10,6 +10,7 @@ import Photo from './Photo.js';
 
 export default function Article() {
     const [frontpageNews, setFrontpageNews] = useState('');
+    const [published, setPublished] = useState(false);
     const [currentPosition, setCurrentPosition] = useState(0);
     const [IdArticleToChangePosition, setIdArticleToChangePosition] = useState('');
     const [position, setPosition] = useState(0);
@@ -54,6 +55,7 @@ export default function Article() {
         setCategory(selectedArticle.category);
         setPosition(selectedArticle.position);
         setCurrentPosition(selectedArticle.position);
+        setPublished(selectedArticle.published);
         setArticleDataLoaded(true);
     }
     const handleSave = () => {
@@ -63,6 +65,7 @@ export default function Article() {
         const vest = {
                 id: id,
                 category: category,
+                published: published,
                 position: position,
                 title: title,
                 subtitle: subtitle,
@@ -78,7 +81,7 @@ export default function Article() {
         } else {
             vest.dateUpdated = Date.now();
             updateArticle(vest);
-            updateArticlePosition(IdArticleToChangePosition, currentPosition)
+            if(IdArticleToChangePosition !== '') {updateArticlePosition(IdArticleToChangePosition, currentPosition)}
         }
     }
 
@@ -100,6 +103,11 @@ export default function Article() {
           setIdArticleToChangePosition(articleWithSamePosition._id);
     }
 
+    const handleCheck = (e) => {
+        const v = e.target.checked;
+        setPublished(v);
+    }
+
     useEffect(() => {
         findSelectedArticle();
         return () => {
@@ -118,6 +126,10 @@ export default function Article() {
         })
         setFrontpageNews(n);
     }, [])
+
+    useEffect(() => {
+        console.log(published);
+    }, [published])
 
     return (
         <div className = "article">
@@ -155,9 +167,21 @@ export default function Article() {
                     imgURL = {imgURL}
                 />
                 {title !== '' && text !== '' && imgURL !== '' ?
-                    <Link to="/allArticles">
-                        <button className="btn" onClick={handleSave}>Save</button>
-                    </Link>
+                    <div>
+                        <Link to="/allArticles">
+                            <button className="btn" onClick={handleSave}>Save</button>
+                        </Link>
+                        <label htmlFor = "publishCheckbox">Objavljeno</label>
+                        <input 
+                            id = "publishCheckbox" 
+                            name = "publishCheckbox" 
+                            type = "checkbox" 
+                            className = "publishCheckbox"
+                            checked = {published}
+                            onChange = {handleCheck}
+                        ></input>
+                    </div>
+
                     :
                     <div></div>}
             </div>

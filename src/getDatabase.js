@@ -20,7 +20,7 @@ export async function getArticle(id) {
         console.log(err);
     }
 }
-export async function postArticle({id, title, subtitle, text, imgURL, imgName, dateUpdated, dateCreated, category, position}) {
+export async function postArticle({id, title, subtitle, text, imgURL, imgName, dateUpdated, dateCreated, category, position, published}) {
     try {
         const newArticle = await fetch(`${HOST_BACKEND}/oneArticle/`, {
             method: 'POST',
@@ -36,7 +36,8 @@ export async function postArticle({id, title, subtitle, text, imgURL, imgName, d
                 dateUpdated: dateUpdated,
                 dateCreated: dateCreated,
                 category: category,
-                position: position
+                position: position,
+                published: published
             })
         })
     }
@@ -107,6 +108,17 @@ export async function updateArticlePosition(id, position) {
                 position: position
             })
         })
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
+
+export async function getByCategory(category) {
+    try {
+        const response = await fetch(`${HOST_BACKEND}/category/${category}`);
+        const newsByCategory = await response.json();
+        return newsByCategory
     }
     catch (err) {
         console.log(err)

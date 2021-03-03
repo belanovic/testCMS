@@ -30,6 +30,7 @@ export default function Article() {
         } = useContext(context);
 
     let contentLoaded = articleDataLoaded === true && articleImgLoaded === true;
+    let showPosition = published === true? 'inline' : 'none';
 
     function findNewLine() {
         const pasusi = text.split('\n')
@@ -93,6 +94,10 @@ export default function Article() {
     }
 
     const handleNumber = (e) => {
+          if (published === false) {
+            setPosition(0);
+            return
+          }
           const numInput = parseInt(e.target.value);
           if (numInput > 10 || numInput < 0) return;
           setPosition(numInput);
@@ -107,6 +112,9 @@ export default function Article() {
     const handleCheck = (e) => {
         const v = e.target.checked;
         setPublished(v);
+        if(v === false) {
+            setPosition(0)
+        }
     }
 
     useEffect(() => {
@@ -138,7 +146,14 @@ export default function Article() {
             <div className="article-parts" style = {{
                 display: contentLoaded? 'block' : 'none'
             }}>
-                <input type = "number" min = "0" max = "10" onChange = {handleNumber} value = {position}></input>
+                <input 
+                    type = "number" 
+                    min = "0" 
+                    max = "10" 
+                    onChange = {handleNumber} 
+                    value = {position}
+                    style = {{display: showPosition}}
+                ></input>
                 <select className = "categories" value = {category} onChange = {handleSelect}>
                     <option value = "politics">Politics</option>
                     <option value = "business">Business</option>

@@ -7,7 +7,6 @@ const database = firebase.database();
 const storage = firebase.storage();
 
 async function removeImagesDB() {
-    const allImages
     const currentImgRef = await storage.ref('site-news-images/' + currentImgName);
     const deletedImage = await currentImgRef.delete();
 }

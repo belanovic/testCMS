@@ -37,7 +37,11 @@ export default function AllArticles() {
                         <Link to={`/oneArticle/${oneArticle._id}`}>
                             <h2>{oneArticle.title}</h2>
                         </Link>
-                        <Time timeCreated = {oneArticle.dateCreated} timeUpdated = {oneArticle.dateUpdated} />
+                        <Time 
+                            timeCreated = {oneArticle.dateCreated} 
+                            timeUpdated = {oneArticle.dateUpdated}
+                            timePublished = {oneArticle.datePublished}
+                        />
                         <Link to={`/delete/${oneArticle._id}`}>
                             <button>Delete</button>
                         </Link>

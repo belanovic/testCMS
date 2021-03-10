@@ -47,7 +47,6 @@ export default function Article() {
         }
         const response = await getArticle(id);
         const selectedArticle = await response.json();
-        console.log(selectedArticle);
         setIsNewArticle(false);
         setTitle(selectedArticle.title);
         setSubtitle(selectedArticle.subtitle);
@@ -75,15 +74,22 @@ export default function Article() {
                 imgURL: imgURL, 
                 imgName: imgName
         }
-        console.log(vest);
         if (id === 'new') {
-            vest.dateCreated = Date.now();
-            vest.dateUpdated = Date.now();
-            postArticle(vest); 
+            vest.dateCreated = Date();
+            vest.dateUpdated = Date();
+            if (published) {
+                vest.datePublished = Date();
+            }
+            postArticle(vest);
         } else {
-            vest.dateUpdated = Date.now();
+            vest.dateUpdated = Date();
+            if (published) {
+                vest.datePublished = Date()
+            }
             updateArticle(vest);
-            if(IdArticleToChangePosition !== '') {updateArticlePosition(IdArticleToChangePosition, currentPosition)}
+            if(IdArticleToChangePosition !== '') {
+                updateArticlePosition(IdArticleToChangePosition, currentPosition)
+            }
         }
     }
 
@@ -136,9 +142,6 @@ export default function Article() {
         setFrontpageNews(n);
     }, [])
 
-    useEffect(() => {
-        console.log(published);
-    }, [published])
 
     return (
         <div className = "article">

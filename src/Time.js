@@ -6,7 +6,7 @@ const formatDate = (d) => {
     return date + ' ' + time
 }
 
-export default function Time({ timeCreated, timeUpdated }) {
+export default function Time({ timeCreated, timeUpdated, timePublished }) {
     return (
         <div className="time">
             <p className="lastUpdate">
@@ -14,6 +14,9 @@ export default function Time({ timeCreated, timeUpdated }) {
             </p>
             <p className="dateCreated">
                 Date created: {formatDate(timeCreated)}
+            </p>
+            <p className="datePublished">
+                Date published: {formatDate(timePublished)}
             </p>
         </div>
     )

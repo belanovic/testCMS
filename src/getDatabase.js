@@ -20,7 +20,9 @@ export async function getArticle(id) {
         console.log(err);
     }
 }
-export async function postArticle({id, title, subtitle, text, imgURL, imgName, dateUpdated, dateCreated, category, position, published}) {
+export async function postArticle({id, title, subtitle, text, imgURL, imgName, 
+                                dateUpdated, dateCreated, datePublished,
+                                category, position, published}) {
     try {
         const newArticle = await fetch(`${HOST_BACKEND}/oneArticle/`, {
             method: 'POST',
@@ -35,6 +37,7 @@ export async function postArticle({id, title, subtitle, text, imgURL, imgName, d
                 imgName: imgName,
                 dateUpdated: dateUpdated,
                 dateCreated: dateCreated,
+                datePublished: datePublished,
                 category: category,
                 position: position,
                 published: published
@@ -46,7 +49,9 @@ export async function postArticle({id, title, subtitle, text, imgURL, imgName, d
     }
 }
 
-export async function updateArticle({id, title, subtitle, text, imgURL, imgName, position, category, published}) {
+export async function updateArticle({id, title, subtitle, text, 
+                                    imgURL, imgName, position, 
+                                    category, published, datePublished}) {
     try {
         const updatedArticle = await fetch(`${HOST_BACKEND}/oneArticle/${id}`, {
             method: 'PUT',
@@ -59,7 +64,8 @@ export async function updateArticle({id, title, subtitle, text, imgURL, imgName,
                 text: text,
                 imgURL: imgURL,
                 imgName: imgName,
-                dateUpdated: Date.now(),
+                dateUpdated: Date(),
+                datePublished: datePublished,
                 category: category,
                 position: position,
                 published: published

@@ -18,8 +18,8 @@ export default function ChooseFile({ setImgURL, setImgName, currentImgName, isNe
         if (file === undefined) return;
         const fileName = Date.now() + '_' + file.name;
         const compressedFile = await imageCompression(file, options);
-        console.log(file.size/1024 + ' KB');
-        console.log(compressedFile.size/1024 + ' KB');
+      /*   console.log(file.size/1024 + ' KB');
+        console.log(compressedFile.size/1024 + ' KB'); */
         file = compressedFile;
         const ref8 = storage.ref('site-news-images/' + fileName);
         if (!isNewArticle && changeImgCounter > 0) {

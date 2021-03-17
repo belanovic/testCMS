@@ -13,7 +13,7 @@ export async function getAllArticles() {
 
 export async function getArticle(id) {
     try {
-        const response = await fetch(`${HOST_BACKEND}/oneArticle/${id}`);        
+        const response = await fetch(`${HOST_BACKEND}/oneArticle/${id}`);
         return response
     }
     catch(err) {
@@ -43,6 +43,7 @@ export async function postArticle({id, title, subtitle, text, imgURL, imgName,
                 published: published
             })
         })
+        return newArticle
     }
     catch (err) {
         console.log(err);
@@ -71,6 +72,7 @@ export async function updateArticle({id, title, subtitle, text,
                 published: published
             })
         })
+        return updatedArticle;
     }
     catch (err) {
         console.log(err)

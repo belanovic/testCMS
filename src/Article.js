@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { context } from './newsContext.js';
-import {getArticle, postArticle, updateArticle, getFrontpageNews, updateArticlePosition} from './getDatabase.js';
+import {getArticle,getAllArticles, postArticle, updateArticle, getFrontpageNews, updateArticlePosition} from './getDatabase.js';
 import Title from './Title.js';
 import Subtitle from './Subtitle.js';
 import Textarea from './Textarea.js';
@@ -9,6 +9,7 @@ import ChooseFile from './Choose-file.js';
 import Photo from './Photo.js';
 
 export default function Article() {
+
     const [frontpageNews, setFrontpageNews] = useState('');
     const [published, setPublished] = useState(false);
     const [currentPosition, setCurrentPosition] = useState(0);
@@ -59,7 +60,7 @@ export default function Article() {
         setPublished(selectedArticle.published);
         setArticleDataLoaded(true);
     }
-    const handleSave = () => {
+    async function handleSave() {
         if (title.length === 0 || text.length === 0) {
             return;
         }
@@ -75,20 +76,46 @@ export default function Article() {
                 imgName: imgName
         }
         if (id === 'new') {
-            vest.dateCreated = Date();
-            vest.dateUpdated = Date();
-            if (published) {
-                vest.datePublished = Date();
+            try{
+                vest.dateCreated = Date();
+                vest.dateUpdated = Date();
+                if (published) {
+                    vest.datePublished = Date();
+                 }
+                let response = await postArticle(vest);
+                console.log(response);
+                let deployedArticle = await response.text(response);
+                console.log(deployedArticle);
+                return deployedArticle
+            } catch(err) {
+                console.log(err);
             }
-            postArticle(vest);
+            
         } else {
-            vest.dateUpdated = Date();
-            if (published) {
-                vest.datePublished = Date()
-            }
-            updateArticle(vest);
-            if(IdArticleToChangePosition !== '') {
-                updateArticlePosition(IdArticleToChangePosition, currentPosition)
+            try {
+                vest.dateUpdated = Date();
+                if (published) {
+                    vest.datePublished = Date()
+                }
+                let response = await updateArticle(vest);
+                let updatedArticle = await response.json();
+                console.log(updatedArticle)
+                if(IdArticleToChangePosition !== '') {
+                    let response = await updateArticlePosition(IdArticleToChangePosition, currentPosition);
+                    let changedPositionArticle = response.json();
+                }
+
+                getAllArticles()
+                .then((allNews) => {
+                setListAllArticles(allNews);
+                })
+                .then((prom) => {
+                setListLoaded(true);
+                })
+
+                return updatedArticle
+            } catch(err) {
+                console.log(err);
             }
         }
     }
@@ -136,9 +163,9 @@ export default function Article() {
 
     useEffect(async () => {
         const n = await getFrontpageNews();
-        n.forEach((prom) => {
+        /* n.forEach((prom) => {
             console.log(prom.position + ' ' + prom.title);
-        })
+        }) */
         setFrontpageNews(n);
     }, [])
 
@@ -187,7 +214,7 @@ export default function Article() {
                 />
                 {title !== '' && text !== '' && imgURL !== '' ?
                     <div>
-                        <Link to="/allArticles">
+                        <Link to={`/allArticles`}>
                             <button className="btn" onClick={handleSave}>Save</button>
                         </Link>
                         <label htmlFor = "publishCheckbox">Objavljeno</label>
@@ -213,8 +240,8 @@ export default function Article() {
                 pointerEvents: 'none'
             }}>Loading...</div> 
             
-            <Link to='/allArticles'>
-                <button>Lista vesti</button>
+            <Link to= {`/allArticles`}>
+                <button>Nazad na listu vesti</button>
             </Link>
             <div className = "preview">{paragraphs.map(prom => prom)}</div>
             <Link to = "/" style={{ textDecoration: 'none' }}><div className = "homepageBtn">Homepage</div></Link>

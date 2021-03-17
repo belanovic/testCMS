@@ -1,27 +1,32 @@
 import React, { useEffect, useState, useContext } from 'react';
 import {getAllArticles} from './getDatabase.js';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { context } from './newsContext.js';
 import Pagination from './Pagination.js';
 import Time from './Time.js';
+
 import ChooseFile from './Choose-file.js';
 import Photo from './Photo';
 
 const NEWS_PER_PAGE = 10;
 
+
+
 export default function AllArticles() {
 
-    const { listAllArticles, setListAllArticles, listLoaded, setListLoaded } = useContext(context);
+    const {listAllArticles, setListAllArticles, listLoaded, setListLoaded } = useContext(context);
     const [pageNum, setPageNum] = useState(1);
-    const [imgURL, setImgURL] = useState('');
     const [imgName, setImgName] = useState('');
 
     useEffect(function () {
-        getAllArticles()
+            getAllArticles()
             .then((allNews) => {
-                setListAllArticles(allNews)
+                setListAllArticles(allNews);
             })
-            .then(prom => setListLoaded(true))
+            .then((prom) => {
+                setListLoaded(true);
+            })
+        
         return function() {
             setListLoaded(false);
         }

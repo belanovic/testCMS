@@ -85,7 +85,10 @@ export default function Article() {
                 let response = await postArticle(vest);
                 console.log(response);
                 let deployedArticle = await response.text(response);
-                console.log(deployedArticle);
+                const allNews = await getAllArticles();
+                const promiseResolveA = await setListAllArticles(allNews);
+                const promiseResolveB = await setListLoaded(true);
+                window.location.href = '/allArticles';
                 return deployedArticle
             } catch(err) {
                 console.log(err);
@@ -104,15 +107,10 @@ export default function Article() {
                     let response = await updateArticlePosition(IdArticleToChangePosition, currentPosition);
                     let changedPositionArticle = response.json();
                 }
-
-                getAllArticles()
-                .then((allNews) => {
-                setListAllArticles(allNews);
-                })
-                .then((prom) => {
-                setListLoaded(true);
-                })
-
+                const allNews = await getAllArticles();
+                const promiseResolveA = await setListAllArticles(allNews);
+                const promiseResolveB = await setListLoaded(true);
+                window.location.href = '/allArticles';
                 return updatedArticle
             } catch(err) {
                 console.log(err);
@@ -214,9 +212,8 @@ export default function Article() {
                 />
                 {title !== '' && text !== '' && imgURL !== '' ?
                     <div>
-                        <Link to={`/allArticles`}>
-                            <button className="btn" onClick={handleSave}>Save</button>
-                        </Link>
+                        <button className="btn" onClick={handleSave}>Save</button>
+
                         <label htmlFor = "publishCheckbox">Objavljeno</label>
                         <input 
                             id = "publishCheckbox" 

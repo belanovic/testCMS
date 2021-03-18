@@ -18,18 +18,12 @@ export default function AllArticles() {
     const [pageNum, setPageNum] = useState(1);
     const [imgName, setImgName] = useState('');
 
-    useEffect(function () {
-            getAllArticles()
-            .then((allNews) => {
-                setListAllArticles(allNews);
-            })
-            .then((prom) => {
-                setListLoaded(true);
-            })
-        
-        return function() {
-            setListLoaded(false);
-        }
+    useEffect(async function () {
+        const allNews = await getAllArticles();
+        const promiseResolveA = await setListAllArticles(allNews);
+        const promiseResolveB = await setListLoaded(true);
+
+        return () => setListLoaded(false);
     }, [])
 
     return (

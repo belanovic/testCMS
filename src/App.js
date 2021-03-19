@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useRef} from 'react';
 import Homepage from './Homepage.js';
 import AllArticles from './AllArticles.js';
 import Article from './Article.js';
@@ -6,8 +6,11 @@ import Delete from './Delete.js';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 export default function App() {    
+    const cmsOverlay = useRef(null);
+    const [showCmsOverlay, setShowCmsOverlay] = useState('none');
     return (
         <div className = "cms">
+            <div className = "cmsOverlay" ref = {cmsOverlay} style = {{display: showCmsOverlay}}></div>
             <Switch>
                 <Route exact path = "/">
                     <Homepage />
@@ -16,13 +19,12 @@ export default function App() {
                     <AllArticles />
                 </Route>
                 <Route path = '/oneArticle/:id'>
-                    <Article />
+                    <Article setShowCmsOverlay = {setShowCmsOverlay} />
                 </Route>
                 <Route path = '/delete/:id'>
                     <Delete />
                 </Route>
             </Switch>
-            
         </div>
     )
 }

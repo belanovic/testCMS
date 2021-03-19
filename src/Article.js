@@ -8,8 +8,7 @@ import Textarea from './Textarea.js';
 import ChooseFile from './Choose-file.js';
 import Photo from './Photo.js';
 
-export default function Article() {
-
+export default function Article({setShowCmsOverlay}) {
     const [frontpageNews, setFrontpageNews] = useState('');
     const [published, setPublished] = useState(false);
     const [currentPosition, setCurrentPosition] = useState(0);
@@ -64,6 +63,7 @@ export default function Article() {
         if (title.length === 0 || text.length === 0) {
             return;
         }
+        setShowCmsOverlay('block');
         const vest = {
                 id: id,
                 category: category,
@@ -88,6 +88,7 @@ export default function Article() {
                 const allNews = await getAllArticles();
                 const promiseResolveA = await setListAllArticles(allNews);
                 const promiseResolveB = await setListLoaded(true);
+                setShowCmsOverlay('block');
                 window.location.href = '/allArticles';
                 return deployedArticle
             } catch(err) {
@@ -110,6 +111,7 @@ export default function Article() {
                 const allNews = await getAllArticles();
                 const promiseResolveA = await setListAllArticles(allNews);
                 const promiseResolveB = await setListLoaded(true);
+                setShowCmsOverlay('block');
                 window.location.href = '/allArticles';
                 return updatedArticle
             } catch(err) {

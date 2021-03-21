@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import { context } from './newsContext.js';
 import Pagination from './Pagination.js';
 import Time from './Time.js';
+import Publish from './Publish.js';
 
 import ChooseFile from './Choose-file.js';
 import Photo from './Photo';
@@ -40,10 +41,12 @@ export default function AllArticles() {
                             timeCreated = {oneArticle.dateCreated} 
                             timeUpdated = {oneArticle.dateUpdated}
                             timePublished = {oneArticle.datePublished}
+                            published = {oneArticle.published}
                         />
                         <Link to={`/delete/${oneArticle._id}`}>
                             <button>Delete</button>
                         </Link>
+                        <Publish id = {oneArticle._id} />
                     </div>
                 })}
             </div>

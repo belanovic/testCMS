@@ -116,6 +116,7 @@ export async function updateArticlePosition(id, position) {
                 position: position
             })
         })
+        return updatedArticle
     }
     catch (err) {
         console.log(err)
@@ -127,6 +128,24 @@ export async function getByCategory(category) {
         const response = await fetch(`${HOST_BACKEND}/category/${category}`);
         const newsByCategory = await response.json();
         return newsByCategory
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
+
+export async function publishArticle(id) {
+    try {
+        const publishedArticle = await fetch(`${HOST_BACKEND}/publishArticle/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'text/plain'
+            },
+            body: JSON.stringify({
+                published: true
+            })
+        })
+        return publishedArticle
     }
     catch (err) {
         console.log(err)

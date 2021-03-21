@@ -105,8 +105,8 @@ export default function Article({setShowCmsOverlay}) {
                 let updatedArticle = await response.json();
                 console.log(updatedArticle)
                 if(IdArticleToChangePosition !== '') {
-                    let response = await updateArticlePosition(IdArticleToChangePosition, currentPosition);
-                    let changedPositionArticle = response.json();
+                    let changedPositionArticle = await updateArticlePosition(IdArticleToChangePosition, currentPosition);
+                    console.log('changed position artuicle' + changedPositionArticle)
                 }
                 const allNews = await getAllArticles();
                 const promiseResolveA = await setListAllArticles(allNews);
@@ -235,6 +235,9 @@ export default function Article({setShowCmsOverlay}) {
                 display: contentLoaded === true || isNewArticle === true? 'none' : 'block',
                 fontSize: '5rem',
                 fontWeight: 'bold',
+
+
+
                 textAlign: 'center',
                 pointerEvents: 'none'
             }}>Loading...</div> 

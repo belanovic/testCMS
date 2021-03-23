@@ -43,10 +43,10 @@ export default function AllArticles() {
                             timePublished = {oneArticle.datePublished}
                             published = {oneArticle.published}
                         />
-                        <Link to={`/delete/${oneArticle._id}`}>
+                        {!oneArticle.published && <Link to={`/delete/${oneArticle._id}`}>
                             <button>Delete</button>
-                        </Link>
-                        <Publish id = {oneArticle._id} />
+                        </Link>}
+                        {!oneArticle.published && <Publish id = {oneArticle._id} />}
                     </div>
                 })}
             </div>

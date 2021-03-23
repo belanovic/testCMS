@@ -81,12 +81,14 @@ export async function updateArticle({id, title, subtitle, text,
 
 export async function deleteArticle(id) {
     try {
-        const articleToDelete = await fetch(`${HOST_BACKEND}/oneArticle/${id}`, {
+        const response = await fetch(`${HOST_BACKEND}/oneArticle/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'text/plain'
             }
         })
+        const deletedArticle = response.json();
+        return deletedArticle
     }
     catch (err) {
         console.log(err);
@@ -136,15 +138,17 @@ export async function getByCategory(category) {
 
 export async function publishArticle(id) {
     try {
-        const publishedArticle = await fetch(`${HOST_BACKEND}/publishArticle/${id}`, {
+        const response = await fetch(`${HOST_BACKEND}/publishArticle/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'text/plain'
             },
             body: JSON.stringify({
-                published: true
+                published: true,
+                datePublished: Date()
             })
         })
+        const publishedArticle = response.json();
         return publishedArticle
     }
     catch (err) {

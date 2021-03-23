@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { context } from './newsContext.js';
-import {deleteArticle} from './getDatabase.js';
+import { deleteArticle } from './getDatabase.js';
 import Title from './Title.js';
 import Subtitle from './Subtitle.js';
 import Textarea from './Textarea.js';
@@ -14,10 +14,11 @@ export default function Delete() {
     const [subtitle, setSubtitle] = useState('');
     const [imgURL, setImgURL] = useState('');
     const { id } = useParams();
-    const {listAllArticles, setListAllArticles,
+    const { listAllArticles, setListAllArticles,
         listLoaded, setListLoaded,
         articleImgLoaded, setArticleImgLoaded,
-        articleDataLoaded, setArticleDataLoaded
+        articleDataLoaded, setArticleDataLoaded,
+        showCmsOverlay, setShowCmsOverlay
     } = useContext(context);
 
     let contentLoaded = articleDataLoaded === true && articleImgLoaded === true;
@@ -31,14 +32,14 @@ export default function Delete() {
         setArticleDataLoaded(true);
     }
 
-    const handleDelete = () => {
-        deleteArticle(id)
-            .then((prom) => {
-                console.log('evo me')
-                setListLoaded(true);
-                return ''
-            })
-            .catch(err => console.log(err));
+    async function handleDelete() {
+        try {
+            const articleDeleted = await deleteArticle(id);
+            console.log(articleDeleted);
+            return articleDeleted
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     useEffect(() => {
@@ -50,15 +51,15 @@ export default function Delete() {
     }, [])
 
     return (
-        <div className = "delete">
-            <div className="delete-parts" style = {{
-                display: contentLoaded? 'block' : 'none'
+        <div className="delete">
+            <div className="delete-parts" style={{
+                display: contentLoaded ? 'block' : 'none'
             }}>
-                <h1 className = "deleteTitle">{title}</h1>
-                <h3 className = "deleteSubtitle">{subtitle}</h3>
-                <div className = "deleteText">{text}</div>
+                <h1 className="deleteTitle">{title}</h1>
+                <h3 className="deleteSubtitle">{subtitle}</h3>
+                <div className="deleteText">{text}</div>
                 <Photo
-                    imgURL = {imgURL}
+                    imgURL={imgURL}
                 />
                 {title !== '' && text !== '' && imgURL !== '' ?
                     <Link to="/allArticles">
@@ -67,16 +68,16 @@ export default function Delete() {
                     :
                     <div></div>}
             </div>
-            <div className = "loadingArticle" style = {{
-                display: contentLoaded === true? 'none' : 'block',
+            <div className="loadingArticle" style={{
+                display: contentLoaded === true ? 'none' : 'block',
                 fontSize: '5rem',
                 fontWeight: 'bold',
                 textAlign: 'center'
-            }}>Loading...</div> 
+            }}>Loading...</div>
             <Link to='/allArticles'>
                 <button>Lista vesti</button>
             </Link>
-            <Link to = "/" style={{ textDecoration: 'none' }}><div className = "homepageBtn">Homepage</div></Link>
+            <Link to="/" style={{ textDecoration: 'none' }}><div className="homepageBtn">Homepage</div></Link>
         </div>
     )
 }

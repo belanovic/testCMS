@@ -1,13 +1,14 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useContext} from 'react';
 import Homepage from './Homepage.js';
 import AllArticles from './AllArticles.js';
 import Article from './Article.js';
 import Delete from './Delete.js';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import {context} from './newsContext';
 
-export default function App() {    
+export default function App() {
     const cmsOverlay = useRef(null);
-    const [showCmsOverlay, setShowCmsOverlay] = useState('none');
+    const {showCmsOverlay, setShowCmsOverlay} = useContext(context);
     return (
         <div className = "cms">
             <div className = "cmsOverlay" ref = {cmsOverlay} style = {{display: showCmsOverlay}}></div>

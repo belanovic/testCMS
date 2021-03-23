@@ -11,6 +11,7 @@ import Photo from './Photo.js';
 export default function Article({setShowCmsOverlay}) {
     const [frontpageNews, setFrontpageNews] = useState('');
     const [published, setPublished] = useState(false);
+    const [alreadyPublished, setAlreadyPublished] = useState(false);
     const [currentPosition, setCurrentPosition] = useState(0);
     const [IdArticleToChangePosition, setIdArticleToChangePosition] = useState('');
     const [position, setPosition] = useState(0);
@@ -57,6 +58,7 @@ export default function Article({setShowCmsOverlay}) {
         setPosition(selectedArticle.position);
         setCurrentPosition(selectedArticle.position);
         setPublished(selectedArticle.published);
+        setAlreadyPublished(selectedArticle.published);
         setArticleDataLoaded(true);
     }
     async function handleSave() {
@@ -98,7 +100,7 @@ export default function Article({setShowCmsOverlay}) {
         } else {
             try {
                 vest.dateUpdated = Date();
-                if (published) {
+                if (published === true && alreadyPublished === false) {
                     vest.datePublished = Date()
                 }
                 let response = await updateArticle(vest);

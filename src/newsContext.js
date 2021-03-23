@@ -8,6 +8,8 @@ function Provider(props) {
     const [listLoaded, setListLoaded] = useState(true);
     const [articleDataLoaded, setArticleDataLoaded] = useState(false);
     const [articleImgLoaded, setArticleImgLoaded] = useState(false);
+    const [showCmsOverlay, setShowCmsOverlay] = useState('none');
+    
 
     useEffect(() => {
     }, [listLoaded])
@@ -21,7 +23,9 @@ function Provider(props) {
             articleDataLoaded,
             setArticleDataLoaded,
             articleImgLoaded,
-            setArticleImgLoaded
+            setArticleImgLoaded,
+            showCmsOverlay, 
+            setShowCmsOverlay
         }}>
             {props.children}
         </context.Provider>

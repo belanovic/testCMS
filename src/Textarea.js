@@ -6,8 +6,7 @@ export default function Textarea({text, setText}) {
         const value = e.target.value;
         setText(value);
     }
-
-
+    
     return (
         <textarea
             name = "textarea"

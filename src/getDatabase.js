@@ -20,7 +20,7 @@ export async function getArticle(id) {
         console.log(err);
     }
 }
-export async function postArticle({id, title, subtitle, text, imgURL, imgName, 
+export async function postArticle({id, title, subtitle, text, paragraphs, imgURL, imgName, 
                                 dateUpdated, dateCreated, datePublished,
                                 category, position, published}) {
     try {
@@ -33,6 +33,7 @@ export async function postArticle({id, title, subtitle, text, imgURL, imgName,
                 title: title,
                 subtitle: subtitle,
                 text: text,
+                paragraphs: paragraphs,
                 imgURL: imgURL,
                 imgName: imgName,
                 dateUpdated: dateUpdated,
@@ -50,7 +51,7 @@ export async function postArticle({id, title, subtitle, text, imgURL, imgName,
     }
 }
 
-export async function updateArticle({id, title, subtitle, text, 
+export async function updateArticle({id, title, subtitle, text,  paragraphs,
                                     imgURL, imgName, position, 
                                     category, published, datePublished}) {
     try {
@@ -63,6 +64,7 @@ export async function updateArticle({id, title, subtitle, text,
                 title: title,
                 subtitle: subtitle,
                 text: text,
+                paragraphs: paragraphs,
                 imgURL: imgURL,
                 imgName: imgName,
                 dateUpdated: Date(),

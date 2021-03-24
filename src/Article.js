@@ -37,6 +37,7 @@ export default function Article({setShowCmsOverlay}) {
         const pasusi = text.split('\n')
         const elementsP = pasusi.map((prom, i) => <p key = {i}>{prom}</p>);
         setParagraphs(elementsP);
+        console.log(paragraphs)
     }
 
     async function findSelectedArticle () {
@@ -52,6 +53,7 @@ export default function Article({setShowCmsOverlay}) {
         setTitle(selectedArticle.title);
         setSubtitle(selectedArticle.subtitle);
         setText(selectedArticle.text);
+        setParagraphs(selectedArticle.paragraphs);
         setImgURL(selectedArticle.imgURL);
         setImgName(selectedArticle.imgName);
         setCategory(selectedArticle.category);
@@ -74,6 +76,7 @@ export default function Article({setShowCmsOverlay}) {
                 title: title,
                 subtitle: subtitle,
                 text: text,
+                paragraphs: paragraphs,
                 imgURL: imgURL, 
                 imgName: imgName
         }

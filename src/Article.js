@@ -5,6 +5,7 @@ import {getArticle,getAllArticles, postArticle, updateArticle, getFrontpageNews,
 import Title from './Title.js';
 import Subtitle from './Subtitle.js';
 import Textarea from './Textarea.js';
+import TextDiv from './TextDiv.js';
 import ChooseFile from './Choose-file.js';
 import Photo from './Photo.js';
 
@@ -35,7 +36,7 @@ export default function Article({setShowCmsOverlay}) {
 
     function findNewLine() {
         const pasusi = text.split('\n')
-        const elementsP = pasusi.map((prom, i) => <p key = {i}>{prom}</p>);
+        const elementsP = pasusi.map((prom, i) =><p key = {i}>{prom}</p>);
         setParagraphs(elementsP);
         console.log(paragraphs)
     }
@@ -208,6 +209,7 @@ export default function Article({setShowCmsOverlay}) {
                     text={text}
                     setText={setText}
                 />
+                <TextDiv />
                 <ChooseFile
                     setImgURL={setImgURL}
                     setImgName={setImgName}

@@ -7,7 +7,7 @@ export async function getAllArticles() {
         return allNews
     }
     catch (err) {
-        console.log(err)
+        console.log(err);
     }
 }
 

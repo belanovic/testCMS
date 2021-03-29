@@ -13,6 +13,7 @@ export default function Publish({ id }) {
            const allNews = await getAllArticles();
            const promiseResolveA = await setListAllArticles(allNews);
            const promiseResolveB = await setListLoaded(true);
+           /* window.location.href = '/allArticles'; */
            setShowCmsOverlay('none');
            console.log(publishedArticle)
            return publishedArticle

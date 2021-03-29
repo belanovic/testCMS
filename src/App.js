@@ -1,4 +1,4 @@
-import React, {useState, useRef, useContext} from 'react';
+import React, {useState, useRef, useContext, useEffect} from 'react';
 import Homepage from './Homepage.js';
 import AllArticles from './AllArticles.js';
 import Article from './Article.js';
@@ -9,6 +9,7 @@ import {context} from './newsContext';
 export default function App() {
     const cmsOverlay = useRef(null);
     const {showCmsOverlay, setShowCmsOverlay} = useContext(context);
+
     return (
         <div className = "cms">
             <div className = "cmsOverlay" ref = {cmsOverlay} style = {{display: showCmsOverlay}}></div>

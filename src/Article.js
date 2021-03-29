@@ -5,7 +5,6 @@ import {getArticle,getAllArticles, postArticle, updateArticle, getFrontpageNews,
 import Title from './Title.js';
 import Subtitle from './Subtitle.js';
 import Textarea from './Textarea.js';
-import TextDiv from './TextDiv.js';
 import ChooseFile from './Choose-file.js';
 import Photo from './Photo.js';
 
@@ -94,8 +93,8 @@ export default function Article({setShowCmsOverlay}) {
                 const allNews = await getAllArticles();
                 const promiseResolveA = await setListAllArticles(allNews);
                 const promiseResolveB = await setListLoaded(true);
-                setShowCmsOverlay('block');
                 window.location.href = '/allArticles';
+                setShowCmsOverlay('block');
                 return deployedArticle
             } catch(err) {
                 console.log(err);
@@ -117,8 +116,8 @@ export default function Article({setShowCmsOverlay}) {
                 const allNews = await getAllArticles();
                 const promiseResolveA = await setListAllArticles(allNews);
                 const promiseResolveB = await setListLoaded(true);
-                setShowCmsOverlay('block');
                 window.location.href = '/allArticles';
+                setShowCmsOverlay('block');
                 return updatedArticle
             } catch(err) {
                 console.log(err);
@@ -209,7 +208,7 @@ export default function Article({setShowCmsOverlay}) {
                     text={text}
                     setText={setText}
                 />
-                <TextDiv />
+                
                 <ChooseFile
                     setImgURL={setImgURL}
                     setImgName={setImgName}

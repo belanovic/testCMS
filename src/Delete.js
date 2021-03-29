@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { context } from './newsContext.js';
-import { deleteArticle } from './getDatabase.js';
+import { deleteArticle, getAllArticles } from './getDatabase.js';
 import Title from './Title.js';
 import Subtitle from './Subtitle.js';
 import Textarea from './Textarea.js';
@@ -34,8 +34,13 @@ export default function Delete() {
 
     async function handleDelete() {
         try {
+            const promiseResolveD = setShowCmsOverlay('block');
             const articleDeleted = await deleteArticle(id);
             console.log(articleDeleted);
+            const allNews = await getAllArticles();
+            const promiseResolveA = await setListAllArticles(allNews);
+            const promiseResolveB = await setListLoaded(true);
+            window.location.href = '/allArticles';
             return articleDeleted
         } catch (err) {
             console.log(err)
@@ -62,9 +67,9 @@ export default function Delete() {
                     imgURL={imgURL}
                 />
                 {title !== '' && text !== '' && imgURL !== '' ?
-                    <Link to="/allArticles">
+     
                         <button className="btn" onClick={handleDelete}>Delete</button>
-                    </Link>
+
                     :
                     <div></div>}
             </div>

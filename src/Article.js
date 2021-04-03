@@ -7,6 +7,10 @@ import Subtitle from './Subtitle.js';
 import Textarea from './Textarea.js';
 import ChooseFile from './Choose-file.js';
 import Photo from './Photo.js';
+import removeImageDB from './removeImageDB.js';
+import firebase from './firebase.js';
+
+const storage = firebase.storage();
 
 export default function Article({setShowCmsOverlay}) {
     const [frontpageNews, setFrontpageNews] = useState('');
@@ -37,14 +41,15 @@ export default function Article({setShowCmsOverlay}) {
         const pasusi = text.split('\n')
         const elementsP = pasusi.map((prom, i) =><p key = {i}>{prom}</p>);
         setParagraphs(elementsP);
-        console.log(paragraphs)
     }
 
     async function findSelectedArticle () {
+
         if (id === 'new') {
             setIsNewArticle(true);
             setArticleDataLoaded(true);
             setArticleImgLoaded(true);
+
             return
         }
         const response = await getArticle(id);
@@ -177,7 +182,6 @@ export default function Article({setShowCmsOverlay}) {
 
     return (
         <div className = "article">
-            
             <div className="article-parts" style = {{
                 display: contentLoaded? 'block' : 'none'
             }}>

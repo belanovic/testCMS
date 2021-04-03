@@ -6,6 +6,9 @@ import Title from './Title.js';
 import Subtitle from './Subtitle.js';
 import Textarea from './Textarea.js';
 import Photo from './Photo.js';
+import firebase from './firebase.js';
+
+const storage = firebase.storage();
 
 export default function Delete() {
 
@@ -13,6 +16,7 @@ export default function Delete() {
     const [text, setText] = useState('');
     const [subtitle, setSubtitle] = useState('');
     const [imgURL, setImgURL] = useState('');
+    const [imgName, setImgName] = useState('');
     const { id } = useParams();
     const { listAllArticles, setListAllArticles,
         listLoaded, setListLoaded,
@@ -29,6 +33,7 @@ export default function Delete() {
         setSubtitle(selectedArticle.subtitle);
         setText(selectedArticle.text);
         setImgURL(selectedArticle.imgURL);
+        setImgName(selectedArticle.imgName);
         setArticleDataLoaded(true);
     }
 
@@ -37,6 +42,10 @@ export default function Delete() {
             const promiseResolveD = setShowCmsOverlay('block');
             const articleDeleted = await deleteArticle(id);
             console.log(articleDeleted);
+
+            const imgRef = storage.ref('site-news-images/' + imgName);
+            const deletedImage = await imgRef.delete();
+
             const allNews = await getAllArticles();
             const promiseResolveA = await setListAllArticles(allNews);
             const promiseResolveB = await setListLoaded(true);

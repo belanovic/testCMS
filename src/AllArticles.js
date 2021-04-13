@@ -13,7 +13,7 @@ const NEWS_PER_PAGE = 10;
 
 
 
-export default function AllArticles() {
+export default function AllArticles() { 
 
     const {listAllArticles, setListAllArticles, listLoaded, setListLoaded } = useContext(context);
     const [pageNum, setPageNum] = useState(1);

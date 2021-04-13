@@ -7,8 +7,8 @@ import Subtitle from './Subtitle.js';
 import Textarea from './Textarea.js';
 import ChooseFile from './Choose-file.js';
 import Photo from './Photo.js';
-import removeImageDB from './removeImageDB.js';
 import firebase from './firebase.js';
+import {uploadImageDB, removeImageDB} from './handleImageDB';
 
 const storage = firebase.storage();
 
@@ -24,8 +24,11 @@ export default function Article({setShowCmsOverlay}) {
     const [text, setText] = useState('');
     const [subtitle, setSubtitle] = useState('');
     const [paragraphs, setParagraphs] = useState([]);
-    const [imgURL, setImgURL] = useState('');
+    const [deployedImgName, setDeployedImgName] = useState('');
     const [imgName, setImgName] = useState('');
+    const [deployedImgURL, setDeployedImgURL] = useState('');
+    const [imgURL, setImgURL] = useState('');
+    const [imgFile, setImgFile] = useState('');
     const { id } = useParams();
     const [isNewArticle, setIsNewArticle] = useState(true);
     const { listAllArticles, setListAllArticles,
@@ -49,7 +52,6 @@ export default function Article({setShowCmsOverlay}) {
             setIsNewArticle(true);
             setArticleDataLoaded(true);
             setArticleImgLoaded(true);
-
             return
         }
         const response = await getArticle(id);
@@ -59,7 +61,9 @@ export default function Article({setShowCmsOverlay}) {
         setSubtitle(selectedArticle.subtitle);
         setText(selectedArticle.text);
         setParagraphs(selectedArticle.paragraphs);
+        setDeployedImgURL(selectedArticle.imgURL);
         setImgURL(selectedArticle.imgURL);
+        setDeployedImgName(selectedArticle.imgName);
         setImgName(selectedArticle.imgName);
         setCategory(selectedArticle.category);
         setPosition(selectedArticle.position);
@@ -82,18 +86,18 @@ export default function Article({setShowCmsOverlay}) {
                 subtitle: subtitle,
                 text: text,
                 paragraphs: paragraphs,
-                imgURL: imgURL, 
                 imgName: imgName
         }
         if (id === 'new') {
             try{
+                const photoURL = await uploadImageDB(imgName, imgFile);
+                vest.imgURL = photoURL;
                 vest.dateCreated = Date();
                 vest.dateUpdated = Date();
                 if (published) {
                     vest.datePublished = Date();
                  }
                 let response = await postArticle(vest);
-                console.log(response);
                 let deployedArticle = await response.text(response);
                 const allNews = await getAllArticles();
                 const promiseResolveA = await setListAllArticles(allNews);
@@ -107,7 +111,16 @@ export default function Article({setShowCmsOverlay}) {
             
         } else {
             try {
+                if (deployedImgName !== imgName) {
+                    const photoURL = await uploadImageDB(imgName, imgFile);
+                    const deletionMsg = await removeImageDB(deployedImgName);
+                    console.log(deletionMsg);
+                    vest.imgURL = photoURL;
+                } /* else {
+                    vest.imgURL = imgURL;
+                } */
                 vest.dateUpdated = Date();
+
                 if (published === true && alreadyPublished === false) {
                     vest.datePublished = Date()
                 }
@@ -216,7 +229,7 @@ export default function Article({setShowCmsOverlay}) {
                 <ChooseFile
                     setImgURL={setImgURL}
                     setImgName={setImgName}
-                    currentImgName={imgName}
+                    setImgFile = {setImgFile}
                     isNewArticle={isNewArticle}
                 />
                 <Photo

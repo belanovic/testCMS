@@ -147,7 +147,8 @@ export async function publishArticle(id) {
             },
             body: JSON.stringify({
                 published: true,
-                datePublished: Date()
+                datePublished: Date(), 
+                dateUpdated: Date()
             })
         })
         const publishedArticle = response.json();

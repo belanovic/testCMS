@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 
 const context = React.createContext();
 
@@ -9,13 +9,13 @@ function Provider(props) {
     const [articleDataLoaded, setArticleDataLoaded] = useState(false);
     const [articleImgLoaded, setArticleImgLoaded] = useState(false);
     const [showCmsOverlay, setShowCmsOverlay] = useState('none');
-    
+
 
     useEffect(() => {
     }, [listLoaded])
 
     return (
-        <context.Provider value = {{
+        <context.Provider value={{
             listAllArticles,
             setListAllArticles,
             listLoaded,
@@ -24,7 +24,7 @@ function Provider(props) {
             setArticleDataLoaded,
             articleImgLoaded,
             setArticleImgLoaded,
-            showCmsOverlay, 
+            showCmsOverlay,
             setShowCmsOverlay
         }}>
             {props.children}
@@ -32,4 +32,4 @@ function Provider(props) {
     )
 }
 
-export {context, Provider};
+export { context, Provider };

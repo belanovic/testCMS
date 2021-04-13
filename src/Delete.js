@@ -7,6 +7,7 @@ import Subtitle from './Subtitle.js';
 import Textarea from './Textarea.js';
 import Photo from './Photo.js';
 import firebase from './firebase.js';
+import {removeImageDB} from './handleImageDB';
 
 const storage = firebase.storage();
 
@@ -41,10 +42,7 @@ export default function Delete() {
         try {
             const promiseResolveD = setShowCmsOverlay('block');
             const articleDeleted = await deleteArticle(id);
-            console.log(articleDeleted);
-
-            const imgRef = storage.ref('site-news-images/' + imgName);
-            const deletedImage = await imgRef.delete();
+            const deletedImage = await removeImageDB(imgName);
 
             const allNews = await getAllArticles();
             const promiseResolveA = await setListAllArticles(allNews);

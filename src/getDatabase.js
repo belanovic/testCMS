@@ -22,7 +22,7 @@ export async function getArticle(id) {
 }
 export async function postArticle({id, title, subtitle, text, paragraphs, imgURL, imgName, 
                                 dateUpdated, dateCreated, datePublished,
-                                category, position, published}) {
+                                category, position, published, imgDescription, author, source}) {
     try {
         const newArticle = await fetch(`${HOST_BACKEND}/oneArticle/`, {
             method: 'POST',
@@ -41,7 +41,11 @@ export async function postArticle({id, title, subtitle, text, paragraphs, imgURL
                 datePublished: datePublished,
                 category: category,
                 position: position,
-                published: published
+                published: published,
+                imgDescription: imgDescription,
+                source: source,
+                author: author
+
             })
         })
         return newArticle
@@ -53,7 +57,8 @@ export async function postArticle({id, title, subtitle, text, paragraphs, imgURL
 
 export async function updateArticle({id, title, subtitle, text,  paragraphs,
                                     imgURL, imgName, position, 
-                                    category, published, datePublished}) {
+                                    category, published, datePublished,
+                                    imgDescription, author, source}) {
     try {
         const updatedArticle = await fetch(`${HOST_BACKEND}/oneArticle/${id}`, {
             method: 'PUT',
@@ -71,7 +76,10 @@ export async function updateArticle({id, title, subtitle, text,  paragraphs,
                 datePublished: datePublished,
                 category: category,
                 position: position,
-                published: published
+                published: published,
+                imgDescription: imgDescription,
+                source: source,
+                author: author
             })
         })
         return updatedArticle;

@@ -24,6 +24,9 @@ export default function Article({setShowCmsOverlay}) {
     const [text, setText] = useState('');
     const [subtitle, setSubtitle] = useState('');
     const [paragraphs, setParagraphs] = useState([]);
+    const [author, setAuthor] = useState('');
+    const [source, setSource] = useState('');
+    const [imgDescription, setImgDescription] = useState('');
     const [deployedImgName, setDeployedImgName] = useState('');
     const [imgName, setImgName] = useState('');
     const [deployedImgURL, setDeployedImgURL] = useState('');
@@ -61,6 +64,9 @@ export default function Article({setShowCmsOverlay}) {
         setSubtitle(selectedArticle.subtitle);
         setText(selectedArticle.text);
         setParagraphs(selectedArticle.paragraphs);
+        setSource(selectedArticle.source);
+        setAuthor(selectedArticle.author);
+        setImgDescription(selectedArticle.imgDescription);
         setDeployedImgURL(selectedArticle.imgURL);
         setImgURL(selectedArticle.imgURL);
         setDeployedImgName(selectedArticle.imgName);
@@ -86,7 +92,10 @@ export default function Article({setShowCmsOverlay}) {
                 subtitle: subtitle,
                 text: text,
                 paragraphs: paragraphs,
-                imgName: imgName
+                imgName: imgName,
+                imgDescription: imgDescription,
+                source: source,
+                author: author
         }
         if (id === 'new') {
             try{
@@ -173,6 +182,24 @@ export default function Article({setShowCmsOverlay}) {
         }
     }
 
+    const inputHandler = (e) => {
+        const name = e.target.name;
+        console.log(name);
+        const value = e.target.value;
+        if(name === 'source') {
+            setSource(value);
+            return
+        }
+        if(name === 'author') {
+            setAuthor(value);
+            return
+        }
+        if(name === 'imgDescription') {
+            setImgDescription(value);
+            return
+        }
+    }
+
     useEffect(() => {
         findSelectedArticle();
         return () => {
@@ -213,6 +240,31 @@ export default function Article({setShowCmsOverlay}) {
                     <option value = "entertainment">Entertainment</option>
                     <option value = "sports">Sports</option>
                 </select>
+                <label htmlFor = "source">Izvor</label>
+                <input 
+                    id = "source" 
+                    name = "source" 
+                    type = "text" 
+                    value = {source}
+                    onChange = {inputHandler}
+                    ></input>
+                <label htmlFor = "author">Autor</label>
+                <input 
+                    id = "author" 
+                    name = "author" 
+                    type = "text" 
+                    value = {author}
+                    onChange = {inputHandler}
+                    ></input>
+                <label htmlFor = "imgDescription">Opis fotografije</label>
+                <input 
+                    id = "imgDescription" 
+                    name = "imgDescription" 
+                    type = "text" 
+                    value = {imgDescription}
+                    onChange = {inputHandler}
+                ></input>
+                
                 <Title
                     title={title}
                     setTitle={setTitle}
@@ -258,9 +310,6 @@ export default function Article({setShowCmsOverlay}) {
                 display: contentLoaded === true || isNewArticle === true? 'none' : 'block',
                 fontSize: '5rem',
                 fontWeight: 'bold',
-
-
-
                 textAlign: 'center',
                 pointerEvents: 'none'
             }}>Loading...</div> 

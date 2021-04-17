@@ -8,8 +8,8 @@ function Provider(props) {
     const [listLoaded, setListLoaded] = useState(true);
     const [articleDataLoaded, setArticleDataLoaded] = useState(false);
     const [articleImgLoaded, setArticleImgLoaded] = useState(false);
+    const [articleVideoLoaded, setArticleVideoLoaded] = useState(false);
     const [showCmsOverlay, setShowCmsOverlay] = useState('none');
-
 
     useEffect(() => {
     }, [listLoaded])
@@ -24,6 +24,8 @@ function Provider(props) {
             setArticleDataLoaded,
             articleImgLoaded,
             setArticleImgLoaded,
+            articleVideoLoaded,
+            setArticleVideoLoaded,
             showCmsOverlay,
             setShowCmsOverlay
         }}>

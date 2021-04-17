@@ -6,12 +6,7 @@ import Pagination from './Pagination.js';
 import Time from './Time.js';
 import Publish from './Publish.js';
 
-import ChooseFile from './Choose-file.js';
-import Photo from './Photo';
-
 const NEWS_PER_PAGE = 10;
-
-
 
 export default function AllArticles() { 
 

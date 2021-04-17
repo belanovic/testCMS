@@ -21,8 +21,8 @@ export async function getArticle(id) {
     }
 }
 export async function postArticle({id, title, subtitle, text, paragraphs, imgURL, imgName, 
-                                dateUpdated, dateCreated, datePublished,
-                                category, position, published, imgDescription, author, source}) {
+                                dateUpdated, dateCreated, datePublished, videoURL, videoName,
+                                category, position, published, videoDescription, imgDescription, author, source}) {
     try {
         const newArticle = await fetch(`${HOST_BACKEND}/oneArticle/`, {
             method: 'POST',
@@ -36,6 +36,8 @@ export async function postArticle({id, title, subtitle, text, paragraphs, imgURL
                 paragraphs: paragraphs,
                 imgURL: imgURL,
                 imgName: imgName,
+                videoURL: videoURL,
+                videoName: videoName,
                 dateUpdated: dateUpdated,
                 dateCreated: dateCreated,
                 datePublished: datePublished,
@@ -43,6 +45,7 @@ export async function postArticle({id, title, subtitle, text, paragraphs, imgURL
                 position: position,
                 published: published,
                 imgDescription: imgDescription,
+                videogDescription: videoDescription,
                 source: source,
                 author: author
 
@@ -56,9 +59,9 @@ export async function postArticle({id, title, subtitle, text, paragraphs, imgURL
 }
 
 export async function updateArticle({id, title, subtitle, text,  paragraphs,
-                                    imgURL, imgName, position, 
+                                    imgURL, imgName, videoURL, videoName, position, 
                                     category, published, datePublished,
-                                    imgDescription, author, source}) {
+                                    imgDescription, videoDescription, author, source}) {
     try {
         const updatedArticle = await fetch(`${HOST_BACKEND}/oneArticle/${id}`, {
             method: 'PUT',
@@ -72,12 +75,15 @@ export async function updateArticle({id, title, subtitle, text,  paragraphs,
                 paragraphs: paragraphs,
                 imgURL: imgURL,
                 imgName: imgName,
+                videoURL: videoURL,
+                videoName: videoName,
                 dateUpdated: Date(),
                 datePublished: datePublished,
                 category: category,
                 position: position,
                 published: published,
                 imgDescription: imgDescription,
+                videoDescription: videoDescription,
                 source: source,
                 author: author
             })

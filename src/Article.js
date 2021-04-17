@@ -5,10 +5,13 @@ import {getArticle,getAllArticles, postArticle, updateArticle, getFrontpageNews,
 import Title from './Title.js';
 import Subtitle from './Subtitle.js';
 import Textarea from './Textarea.js';
-import ChooseFile from './Choose-file.js';
+import ChooseImage from './ChooseImage.js';
+import ChooseVideo from './ChooseVideo';
 import Photo from './Photo.js';
+import Video from './Video.js';
 import firebase from './firebase.js';
 import {uploadImageDB, removeImageDB} from './handleImageDB';
+import {uploadVideoDB, removeVideoDB} from './handleVideoDB';
 
 const storage = firebase.storage();
 
@@ -32,11 +35,20 @@ export default function Article({setShowCmsOverlay}) {
     const [deployedImgURL, setDeployedImgURL] = useState('');
     const [imgURL, setImgURL] = useState('');
     const [imgFile, setImgFile] = useState('');
+
+    const [videoDescription, setVideoDescription] = useState('');
+    const [deployedVideoName, setDeployedVideoName] = useState('');
+    const [videoName, setVideoName] = useState('');
+    const [deployedVideoURL, setDeployedVideoURL] = useState('');
+    const [videoURL, setVideoURL] = useState('');
+    const [videoFile, setVideoFile] = useState('');
+
     const { id } = useParams();
     const [isNewArticle, setIsNewArticle] = useState(true);
     const { listAllArticles, setListAllArticles,
             listLoaded, setListLoaded,
             articleImgLoaded, setArticleImgLoaded,
+            articleVideoLoaded, setArticleVideoLoaded,
             articleDataLoaded, setArticleDataLoaded
         } = useContext(context);
 
@@ -45,7 +57,7 @@ export default function Article({setShowCmsOverlay}) {
 
     function findNewLine() {
         const pasusi = text.split('\n')
-        const elementsP = pasusi.map((prom, i) =><p key = {i}>{prom}</p>);
+        const elementsP = pasusi.map((prom, i) => prom);
         setParagraphs(elementsP);
     }
 
@@ -54,6 +66,7 @@ export default function Article({setShowCmsOverlay}) {
         if (id === 'new') {
             setIsNewArticle(true);
             setArticleDataLoaded(true);
+            setArticleVideoLoaded(true);
             setArticleImgLoaded(true);
             return
         }
@@ -71,6 +84,13 @@ export default function Article({setShowCmsOverlay}) {
         setImgURL(selectedArticle.imgURL);
         setDeployedImgName(selectedArticle.imgName);
         setImgName(selectedArticle.imgName);
+
+        setVideoDescription(selectedArticle.videoDescription);
+        setDeployedVideoURL(selectedArticle.videoURL);
+        setVideoURL(selectedArticle.videoURL);
+        setDeployedVideoName(selectedArticle.videoName);
+        setVideoName(selectedArticle.videoName);
+
         setCategory(selectedArticle.category);
         setPosition(selectedArticle.position);
         setCurrentPosition(selectedArticle.position);
@@ -94,13 +114,17 @@ export default function Article({setShowCmsOverlay}) {
                 paragraphs: paragraphs,
                 imgName: imgName,
                 imgDescription: imgDescription,
+                videoName: videoName,
+                videoDescription: videoDescription,
                 source: source,
                 author: author
         }
         if (id === 'new') {
             try{
                 const photoURL = await uploadImageDB(imgName, imgFile);
+                const videoURL = await uploadVideoDB(videoName, videoFile);
                 vest.imgURL = photoURL;
+                vest.videoURL = videoURL;
                 vest.dateCreated = Date();
                 vest.dateUpdated = Date();
                 if (published) {
@@ -123,11 +147,14 @@ export default function Article({setShowCmsOverlay}) {
                 if (deployedImgName !== imgName) {
                     const photoURL = await uploadImageDB(imgName, imgFile);
                     const deletionMsg = await removeImageDB(deployedImgName);
-                    console.log(deletionMsg);
                     vest.imgURL = photoURL;
-                } /* else {
-                    vest.imgURL = imgURL;
-                } */
+                }
+                if (deployedVideoName !== videoName) {
+                    const videoURL = await uploadVideoDB(videoName, videoFile);
+                    const deletionMsg = await removeVideoDB(deployedVideoName);
+                    vest.videoURL = videoURL;
+                }
+                
                 vest.dateUpdated = Date();
 
                 if (published === true && alreadyPublished === false) {
@@ -135,7 +162,6 @@ export default function Article({setShowCmsOverlay}) {
                 }
                 let response = await updateArticle(vest);
                 let updatedArticle = await response.json();
-                console.log(updatedArticle)
                 if(IdArticleToChangePosition !== '') {
                     let changedPositionArticle = await updateArticlePosition(IdArticleToChangePosition, currentPosition);
                     console.log('changed position artuicle' + changedPositionArticle)
@@ -198,12 +224,17 @@ export default function Article({setShowCmsOverlay}) {
             setImgDescription(value);
             return
         }
+        if(name === 'videoDescription') {
+            setVideoDescription(value);
+            return
+        }
     }
 
     useEffect(() => {
         findSelectedArticle();
         return () => {
             setArticleImgLoaded(false);
+            setArticleVideoLoaded(false);
             setArticleDataLoaded(false);
         }
     }, [])
@@ -218,6 +249,13 @@ export default function Article({setShowCmsOverlay}) {
         }) */
         setFrontpageNews(n);
     }, [])
+
+    useEffect(() => {
+
+        console.log('video url is:' + videoURL)
+      
+    }, [videoURL])
+
 
 
     return (
@@ -264,6 +302,14 @@ export default function Article({setShowCmsOverlay}) {
                     value = {imgDescription}
                     onChange = {inputHandler}
                 ></input>
+                <label htmlFor = "videoDescription">Opis fotografije</label>
+                <input 
+                    id = "videoDescription" 
+                    name = "videoDescription" 
+                    type = "text" 
+                    value = {videoDescription}
+                    onChange = {inputHandler}
+                ></input>
                 
                 <Title
                     title={title}
@@ -278,14 +324,23 @@ export default function Article({setShowCmsOverlay}) {
                     setText={setText}
                 />
                 
-                <ChooseFile
+                <ChooseImage
                     setImgURL={setImgURL}
                     setImgName={setImgName}
                     setImgFile = {setImgFile}
-                    isNewArticle={isNewArticle}
+    
+                />
+                <ChooseVideo
+                    setVideoURL={setVideoURL}
+                    setVideoName={setVideoName}
+                    setVideoFile = {setVideoFile}
+    
                 />
                 <Photo
                     imgURL = {imgURL}
+                />
+                <Video
+                    videoURL = {videoURL}
                 />
                 {title !== '' && text !== '' && imgURL !== '' ?
                     <div>

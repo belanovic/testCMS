@@ -7,7 +7,7 @@ const options = {
     useWebWorker: true
 }
 
-export default function ChooseFile({ setImgName, setImgFile, setImgURL }) {
+export default function ChooseImage({ setImgName, setImgFile, setImgURL }) {
 
     async function uploadHandler (e) {
 

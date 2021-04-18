@@ -15,8 +15,9 @@ export default function Video({videoURL}) {
             onLoadStart = {() => {
                 setArticleVideoLoaded(true);
             }}
+            key = {videoURL}
         >
-        <source src={videoURL} type="video/mp4" />
+        <source src={videoURL} /* type="video/mp4" */ />
         </video>
     )
 }

@@ -38,10 +38,10 @@ export default function Article({setShowCmsOverlay}) {
 
     const [videoDescription, setVideoDescription] = useState('');
     const [deployedVideoName, setDeployedVideoName] = useState('');
-    const [videoName, setVideoName] = useState('');
-    const [deployedVideoURL, setDeployedVideoURL] = useState('');
-    const [videoURL, setVideoURL] = useState('');
-    const [videoFile, setVideoFile] = useState('');
+    const [videoName, setVideoName] = useState('none');
+    const [deployedVideoURL, setDeployedVideoURL] = useState('none');
+    const [videoURL, setVideoURL] = useState('none');
+    const [videoFile, setVideoFile] = useState('none');
 
     const { id } = useParams();
     const [isNewArticle, setIsNewArticle] = useState(true);
@@ -122,9 +122,11 @@ export default function Article({setShowCmsOverlay}) {
         if (id === 'new') {
             try{
                 const photoURL = await uploadImageDB(imgName, imgFile);
-                const videoURL = await uploadVideoDB(videoName, videoFile);
+                if(videoName !== 'none'){
+                    const videoURL = await uploadVideoDB(videoName, videoFile);
+                    vest.videoURL = videoURL;
+                }
                 vest.imgURL = photoURL;
-                vest.videoURL = videoURL;
                 vest.dateCreated = Date();
                 vest.dateUpdated = Date();
                 if (published) {
@@ -229,7 +231,6 @@ export default function Article({setShowCmsOverlay}) {
             return
         }
     }
-
     useEffect(() => {
         findSelectedArticle();
         return () => {
@@ -249,14 +250,6 @@ export default function Article({setShowCmsOverlay}) {
         }) */
         setFrontpageNews(n);
     }, [])
-
-    useEffect(() => {
-
-        console.log('video url is:' + videoURL)
-      
-    }, [videoURL])
-
-
 
     return (
         <div className = "article">
@@ -302,7 +295,7 @@ export default function Article({setShowCmsOverlay}) {
                     value = {imgDescription}
                     onChange = {inputHandler}
                 ></input>
-                <label htmlFor = "videoDescription">Opis fotografije</label>
+                <label htmlFor = "videoDescription">Opis video-snimka</label>
                 <input 
                     id = "videoDescription" 
                     name = "videoDescription" 
@@ -339,9 +332,9 @@ export default function Article({setShowCmsOverlay}) {
                 <Photo
                     imgURL = {imgURL}
                 />
-                <Video
+                {videoURL !== 'none' && <Video
                     videoURL = {videoURL}
-                />
+                />}
                 {title !== '' && text !== '' && imgURL !== '' ?
                     <div>
                         <button className="btn" onClick={handleSave}>Save</button>

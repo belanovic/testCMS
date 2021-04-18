@@ -8,6 +8,7 @@ import Textarea from './Textarea.js';
 import Photo from './Photo.js';
 import firebase from './firebase.js';
 import {removeImageDB} from './handleImageDB';
+import {removeVideoDB} from './handleVideoDB';
 
 const storage = firebase.storage();
 
@@ -18,10 +19,13 @@ export default function Delete() {
     const [subtitle, setSubtitle] = useState('');
     const [imgURL, setImgURL] = useState('');
     const [imgName, setImgName] = useState('');
+    const [videoURL, setVideoURL] = useState('');
+    const [videoName, setVideoName] = useState('');
     const { id } = useParams();
     const { listAllArticles, setListAllArticles,
         listLoaded, setListLoaded,
         articleImgLoaded, setArticleImgLoaded,
+        articleVideoLoaded, setArticleVideoLoaded,
         articleDataLoaded, setArticleDataLoaded,
         showCmsOverlay, setShowCmsOverlay
     } = useContext(context);
@@ -35,6 +39,8 @@ export default function Delete() {
         setText(selectedArticle.text);
         setImgURL(selectedArticle.imgURL);
         setImgName(selectedArticle.imgName);
+        setVideoURL(selectedArticle.videoURL);
+        setVideoName(selectedArticle.videoName);
         setArticleDataLoaded(true);
     }
 
@@ -42,7 +48,11 @@ export default function Delete() {
         try {
             const promiseResolveD = setShowCmsOverlay('block');
             const articleDeleted = await deleteArticle(id);
+            console.log('deleted article: ' + articleDeleted);
             const deletedImage = await removeImageDB(imgName);
+            console.log('deleted image: ' + deletedImage);
+            const deletedVideo = await removeVideoDB(videoName);
+            console.log('deleted video: ' + deletedVideo);
 
             const allNews = await getAllArticles();
             const promiseResolveA = await setListAllArticles(allNews);
@@ -58,6 +68,7 @@ export default function Delete() {
         findSelectedArticle();
         return () => {
             setArticleImgLoaded(false);
+            setArticleVideoLoaded(false);
             setArticleDataLoaded(false);
         }
     }, [])

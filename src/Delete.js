@@ -25,7 +25,7 @@ export default function Delete() {
     const { listAllArticles, setListAllArticles,
         listLoaded, setListLoaded,
         articleImgLoaded, setArticleImgLoaded,
-        articleVideoLoaded, setArticleVideoLoaded,
+        /* articleVideoLoaded, setArticleVideoLoaded, */
         articleDataLoaded, setArticleDataLoaded,
         showCmsOverlay, setShowCmsOverlay
     } = useContext(context);
@@ -68,7 +68,7 @@ export default function Delete() {
         findSelectedArticle();
         return () => {
             setArticleImgLoaded(false);
-            setArticleVideoLoaded(false);
+            /* setArticleVideoLoaded(false); */
             setArticleDataLoaded(false);
         }
     }, [])

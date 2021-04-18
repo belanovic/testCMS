@@ -48,7 +48,7 @@ export default function Article({setShowCmsOverlay}) {
     const { listAllArticles, setListAllArticles,
             listLoaded, setListLoaded,
             articleImgLoaded, setArticleImgLoaded,
-            articleVideoLoaded, setArticleVideoLoaded,
+            /* articleVideoLoaded, setArticleVideoLoaded, */
             articleDataLoaded, setArticleDataLoaded
         } = useContext(context);
 
@@ -66,7 +66,7 @@ export default function Article({setShowCmsOverlay}) {
         if (id === 'new') {
             setIsNewArticle(true);
             setArticleDataLoaded(true);
-            setArticleVideoLoaded(true);
+            /* setArticleVideoLoaded(true); */
             setArticleImgLoaded(true);
             return
         }
@@ -235,7 +235,7 @@ export default function Article({setShowCmsOverlay}) {
         findSelectedArticle();
         return () => {
             setArticleImgLoaded(false);
-            setArticleVideoLoaded(false);
+           /*  setArticleVideoLoaded(false); */
             setArticleDataLoaded(false);
         }
     }, [])

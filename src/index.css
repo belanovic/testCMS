@@ -1,7 +1,3 @@
-html {
-    /* font-size: 12px; */
-}
-
 body {
     margin: 0;
     height: 100vh;
@@ -274,4 +270,5 @@ body {
     .header-links-frontend-title {
         font-size: 2rem;
         font-weight: bold;
+    }
 }

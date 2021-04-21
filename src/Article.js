@@ -18,6 +18,13 @@ import ImgCropper from './ImgCropper.js';
 const storage = firebase.storage();
 
 export default function Article({ setShowCmsOverlay }) {
+
+    const [tabPublishVisibility, setTabPublishVisibility] = useState('none')
+    const [tabTextVisibility, setTabTextVisibility] = useState('block')
+    const [tabPhotoVisibility, setTabPhotoVisibility] = useState('none')
+    const [tabVideoVisibility, setTabVideoVisibility] = useState('none')
+
+
     const [frontpageNews, setFrontpageNews] = useState('');
     const [published, setPublished] = useState(false);
     const [alreadyPublished, setAlreadyPublished] = useState(false);
@@ -238,9 +245,19 @@ export default function Article({ setShowCmsOverlay }) {
             return
         }
     }
-    const handleClickTab = (e) => {
-        console.log(e.target);
-    }
+    const handleClickTab = (tab) => {
+
+        const arr = [setTabPublishVisibility, setTabTextVisibility, 
+                    setTabPhotoVisibility, setTabVideoVisibility];
+
+        arr.forEach((prom, i) => {
+            if(tab === i) {
+                prom('block')
+            }else {
+                prom('none');
+            }
+        })
+    }    
     useEffect(() => {
         findSelectedArticle();
         return () => {
@@ -249,6 +266,7 @@ export default function Article({ setShowCmsOverlay }) {
             setArticleDataLoaded(false);
         }
     }, [])
+
     useEffect(() => {
         findNewLine();
     }, [text])
@@ -266,10 +284,6 @@ export default function Article({ setShowCmsOverlay }) {
         setShowFrontend('none');
     }, [])
 
-    useEffect(() => {
-        console.log('Ime fajla:' + imgName + " Adresa: " + imgURL + " Fajl: " + imgFile)
-    }, [imgFile, imgName, imgURL])
-
     return (
         <div className="article" style={{
             display: contentLoaded ? 'block' : 'none'
@@ -278,27 +292,27 @@ export default function Article({ setShowCmsOverlay }) {
             <div className = "article-navigation">
                 <div 
                     className = "article-navigation-tab"
-                    onClick = {handleClickTab}
-                >Objava</div>
+                    onClick = {() => {handleClickTab(0)}}
+                    >Objava</div>
 
                 <div 
                     className = "article-navigation-tab"
-                    onClick = {handleClickTab}
-                >Tekst</div>
+                    onClick = {() => {handleClickTab(1)}}
+                    >Tekst</div>
 
                 <div 
                     className = "article-navigation-tab"
-                    onClick = {handleClickTab}
-                >Fotografija</div>
+                    onClick = {() => {handleClickTab(2)}}
+                    >Fotografija</div>
 
                 <div 
                     className = "article-navigation-tab"
-                    onClick = {handleClickTab}
+                    onClick = {() => {handleClickTab(3)}}
                 >Video</div>
 
             </div>
 
-            <div className = "article-publish">
+            <div className = "article-publish" style = {{display: tabPublishVisibility}}>
                 <div className="publish">
                     {title !== '' && text !== '' && imgURL !== '' ?
                         <div>
@@ -326,7 +340,7 @@ export default function Article({ setShowCmsOverlay }) {
                 </div>
             </div>
 
-            <div className="article-text">
+            <div className="article-text" style = {{display: tabTextVisibility}}>
 
                 <select className="categories" value={category} onChange={handleSelect}>
                     <option value="politics">Politics</option>
@@ -386,7 +400,7 @@ export default function Article({ setShowCmsOverlay }) {
                 <Tags tagsArr={tagsArr} setTagsArr={setTagsArr} />
             </div>
 
-            <div className = "article-photo">
+            <div className = "article-photo" style = {{display: tabPhotoVisibility}}>
                 <Photo
                     imgURL={imgURL}
                     setImgURL={setImgURL}
@@ -396,7 +410,7 @@ export default function Article({ setShowCmsOverlay }) {
                 <ImgCropper setImgURL={setImgURL} setImgFile={setImgFile} setImgName={setImgName} />
             </div>
 
-            <div className = "article-video">
+            <div className = "article-video" style = {{display: tabVideoVisibility}}>
                 <Video
                     videoURL={videoURL}
                     setVideoURL={setVideoURL}

@@ -205,7 +205,6 @@ body {
     font-size: 1rem;
 }
 
-
 /* Image cropper */
 
 .imgCropper {
@@ -262,7 +261,7 @@ body {
     font-size: 1rem;
 }
 
-@media all and (max-width: 800px) {
+@media all and (max-width: 768px) {
     html {
         font-size: 12px;
     }
@@ -272,9 +271,7 @@ body {
         justify-content: space-around;
         margin-top: 2em;
     }
-    .homepage-links > * {
-
-
-
-    }
+    .header-links-frontend-title {
+        font-size: 2rem;
+        font-weight: bold;
 }

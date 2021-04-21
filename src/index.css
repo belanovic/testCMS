@@ -51,14 +51,14 @@ body {
 }
 
 .header-links {
-    flex: 0 0 30%;
+    flex: 0 0 40%;
 }
 .header-links > * {
     margin-right: 1em;
 }
 
 .right-box {
-    flex: 0 0 30%;
+    flex: 0 0 40%;
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -264,7 +264,7 @@ body {
 
 @media all and (max-width: 800px) {
     html {
-        /* font-size: 12px; */
+        font-size: 12px;
     }
     .homepage-links {
         height: 100%;

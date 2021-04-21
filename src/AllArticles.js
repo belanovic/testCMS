@@ -10,7 +10,8 @@ const NEWS_PER_PAGE = 10;
 
 export default function AllArticles() { 
 
-    const {listAllArticles, setListAllArticles, listLoaded, setListLoaded } = useContext(context);
+    const {listAllArticles, setListAllArticles, listLoaded, setListLoaded,
+          setShowHomepageBtn, setAllArticlesBtn, setNewArticleBtn, setShowFrontend} = useContext(context);
     const [pageNum, setPageNum] = useState(1);
     const [imgName, setImgName] = useState('');
 
@@ -19,12 +20,17 @@ export default function AllArticles() {
         const promiseResolveA = await setListAllArticles(allNews);
         const promiseResolveB = await setListLoaded(true);
 
+        setShowHomepageBtn('inline-block');
+        setAllArticlesBtn('none');
+        setNewArticleBtn('inline-block');
+        setShowFrontend('none');
+
         return () => setListLoaded(false);
     }, [])
 
+
     return (
-        <> <Link to = "/oneArticle/new" style={{ textDecoration: 'none' }}><div className = "novaVest">Nova vest</div></Link> 
-           <Link to = "/" style={{ textDecoration: 'none' }}><div className = "homepageBtn">Homepage</div></Link>
+        <>
          {listLoaded === true ?
             <div className="allArticles">
                 {listAllArticles.map((oneArticle, i) => {

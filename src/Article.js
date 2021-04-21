@@ -1,21 +1,23 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { context } from './newsContext.js';
-import {getArticle,getAllArticles, postArticle, updateArticle, getFrontpageNews, updateArticlePosition} from './getDatabase.js';
+import { getArticle, getAllArticles, postArticle, updateArticle, getFrontpageNews, updateArticlePosition } from './getDatabase.js';
 import Title from './Title.js';
 import Subtitle from './Subtitle.js';
 import Textarea from './Textarea.js';
 import ChooseImage from './ChooseImage.js';
 import ChooseVideo from './ChooseVideo';
+import Tags from './Tags.js';
 import Photo from './Photo.js';
 import Video from './Video.js';
 import firebase from './firebase.js';
-import {uploadImageDB, removeImageDB} from './handleImageDB';
-import {uploadVideoDB, removeVideoDB} from './handleVideoDB';
+import { uploadImageDB, removeImageDB } from './handleImageDB';
+import { uploadVideoDB, removeVideoDB } from './handleVideoDB';
+import ImgCropper from './ImgCropper.js';
 
 const storage = firebase.storage();
 
-export default function Article({setShowCmsOverlay}) {
+export default function Article({ setShowCmsOverlay }) {
     const [frontpageNews, setFrontpageNews] = useState('');
     const [published, setPublished] = useState(false);
     const [alreadyPublished, setAlreadyPublished] = useState(false);
@@ -29,6 +31,8 @@ export default function Article({setShowCmsOverlay}) {
     const [paragraphs, setParagraphs] = useState([]);
     const [author, setAuthor] = useState('');
     const [source, setSource] = useState('');
+    const [tagsArr, setTagsArr] = useState(['vesti']);
+
     const [imgDescription, setImgDescription] = useState('');
     const [deployedImgName, setDeployedImgName] = useState('');
     const [imgName, setImgName] = useState('');
@@ -46,14 +50,14 @@ export default function Article({setShowCmsOverlay}) {
     const { id } = useParams();
     const [isNewArticle, setIsNewArticle] = useState(true);
     const { listAllArticles, setListAllArticles,
-            listLoaded, setListLoaded,
-            articleImgLoaded, setArticleImgLoaded,
-            /* articleVideoLoaded, setArticleVideoLoaded, */
-            articleDataLoaded, setArticleDataLoaded
-        } = useContext(context);
+        listLoaded, setListLoaded,
+        articleImgLoaded, setArticleImgLoaded, setShowFrontend,
+        setShowHomepageBtn, setAllArticlesBtn, setNewArticleBtn,
+        articleDataLoaded, setArticleDataLoaded
+    } = useContext(context);
 
     let contentLoaded = articleDataLoaded === true && articleImgLoaded === true;
-    let showPosition = published === true? 'inline' : 'none';
+    let showPosition = published === true ? 'inline' : 'none';
 
     function findNewLine() {
         const pasusi = text.split('\n')
@@ -61,7 +65,7 @@ export default function Article({setShowCmsOverlay}) {
         setParagraphs(elementsP);
     }
 
-    async function findSelectedArticle () {
+    async function findSelectedArticle() {
 
         if (id === 'new') {
             setIsNewArticle(true);
@@ -79,6 +83,8 @@ export default function Article({setShowCmsOverlay}) {
         setParagraphs(selectedArticle.paragraphs);
         setSource(selectedArticle.source);
         setAuthor(selectedArticle.author);
+        setTagsArr(selectedArticle.tagsArr);
+
         setImgDescription(selectedArticle.imgDescription);
         setDeployedImgURL(selectedArticle.imgURL);
         setImgURL(selectedArticle.imgURL);
@@ -104,25 +110,26 @@ export default function Article({setShowCmsOverlay}) {
         }
         setShowCmsOverlay('block');
         const vest = {
-                id: id,
-                category: category,
-                published: published,
-                position: position,
-                title: title,
-                subtitle: subtitle,
-                text: text,
-                paragraphs: paragraphs,
-                imgName: imgName,
-                imgDescription: imgDescription,
-                videoName: videoName,
-                videoDescription: videoDescription,
-                source: source,
-                author: author
+            id: id,
+            category: category,
+            published: published,
+            position: position,
+            title: title,
+            subtitle: subtitle,
+            text: text,
+            paragraphs: paragraphs,
+            imgName: imgName,
+            imgDescription: imgDescription,
+            videoName: videoName,
+            videoDescription: videoDescription,
+            source: source,
+            author: author,
+            tagsArr: tagsArr
         }
         if (id === 'new') {
-            try{
+            try {
                 const photoURL = await uploadImageDB(imgName, imgFile);
-                if(videoName !== 'none'){
+                if (videoName !== 'none') {
                     const videoURL = await uploadVideoDB(videoName, videoFile);
                     vest.videoURL = videoURL;
                 }
@@ -131,7 +138,7 @@ export default function Article({setShowCmsOverlay}) {
                 vest.dateUpdated = Date();
                 if (published) {
                     vest.datePublished = Date();
-                 }
+                }
                 let response = await postArticle(vest);
                 let deployedArticle = await response.text(response);
                 const allNews = await getAllArticles();
@@ -140,10 +147,10 @@ export default function Article({setShowCmsOverlay}) {
                 window.location.href = '/allArticles';
                 setShowCmsOverlay('block');
                 return deployedArticle
-            } catch(err) {
+            } catch (err) {
                 console.log(err);
             }
-            
+
         } else {
             try {
                 if (deployedImgName !== imgName) {
@@ -156,7 +163,7 @@ export default function Article({setShowCmsOverlay}) {
                     const deletionMsg = await removeVideoDB(deployedVideoName);
                     vest.videoURL = videoURL;
                 }
-                
+
                 vest.dateUpdated = Date();
 
                 if (published === true && alreadyPublished === false) {
@@ -164,7 +171,7 @@ export default function Article({setShowCmsOverlay}) {
                 }
                 let response = await updateArticle(vest);
                 let updatedArticle = await response.json();
-                if(IdArticleToChangePosition !== '') {
+                if (IdArticleToChangePosition !== '') {
                     let changedPositionArticle = await updateArticlePosition(IdArticleToChangePosition, currentPosition);
                     console.log('changed position artuicle' + changedPositionArticle)
                 }
@@ -174,7 +181,7 @@ export default function Article({setShowCmsOverlay}) {
                 window.location.href = '/allArticles';
                 setShowCmsOverlay('block');
                 return updatedArticle
-            } catch(err) {
+            } catch (err) {
                 console.log(err);
             }
         }
@@ -187,25 +194,25 @@ export default function Article({setShowCmsOverlay}) {
     }
 
     const handleNumber = (e) => {
-          if (published === false) {
+        if (published === false) {
             setPosition(0);
             return
-          }
-          const numInput = parseInt(e.target.value);
-          if (numInput > 10 || numInput < 0) return;
-          setPosition(numInput);
-          const articleWithSamePosition = frontpageNews.find((prom) => {
-              return prom.position === numInput
-          })
-          console.log(articleWithSamePosition);
-          if (articleWithSamePosition === undefined) return;
-          setIdArticleToChangePosition(articleWithSamePosition._id);
+        }
+        const numInput = parseInt(e.target.value);
+        if (numInput > 10 || numInput < 0) return;
+        setPosition(numInput);
+        const articleWithSamePosition = frontpageNews.find((prom) => {
+            return prom.position === numInput
+        })
+        console.log(articleWithSamePosition);
+        if (articleWithSamePosition === undefined) return;
+        setIdArticleToChangePosition(articleWithSamePosition._id);
     }
 
     const handleCheck = (e) => {
         const v = e.target.checked;
         setPublished(v);
-        if(v === false) {
+        if (v === false) {
             setPosition(0)
         }
     }
@@ -214,28 +221,31 @@ export default function Article({setShowCmsOverlay}) {
         const name = e.target.name;
         console.log(name);
         const value = e.target.value;
-        if(name === 'source') {
+        if (name === 'source') {
             setSource(value);
             return
         }
-        if(name === 'author') {
+        if (name === 'author') {
             setAuthor(value);
             return
         }
-        if(name === 'imgDescription') {
+        if (name === 'imgDescription') {
             setImgDescription(value);
             return
         }
-        if(name === 'videoDescription') {
+        if (name === 'videoDescription') {
             setVideoDescription(value);
             return
         }
+    }
+    const handleClickTab = (e) => {
+        console.log(e.target);
     }
     useEffect(() => {
         findSelectedArticle();
         return () => {
             setArticleImgLoaded(false);
-           /*  setArticleVideoLoaded(false); */
+            /*  setArticleVideoLoaded(false); */
             setArticleDataLoaded(false);
         }
     }, [])
@@ -249,66 +259,121 @@ export default function Article({setShowCmsOverlay}) {
             console.log(prom.position + ' ' + prom.title);
         }) */
         setFrontpageNews(n);
+
+        setShowHomepageBtn('inline-block');
+        setAllArticlesBtn('inline-block');
+        setNewArticleBtn('none');
+        setShowFrontend('none');
     }, [])
 
+    useEffect(() => {
+        console.log('Ime fajla:' + imgName + " Adresa: " + imgURL + " Fajl: " + imgFile)
+    }, [imgFile, imgName, imgURL])
+
     return (
-        <div className = "article">
-            <div className="article-parts" style = {{
-                display: contentLoaded? 'block' : 'none'
-            }}>
-                <input 
-                    type = "number" 
-                    min = "0" 
-                    max = "10" 
-                    onChange = {handleNumber} 
-                    value = {position}
-                    style = {{display: showPosition}}
-                ></input>
-                <select className = "categories" value = {category} onChange = {handleSelect}>
-                    <option value = "politics">Politics</option>
-                    <option value = "business">Business</option>
-                    <option value = "technology">Technology</option>
-                    <option value = "entertainment">Entertainment</option>
-                    <option value = "sports">Sports</option>
+        <div className="article" style={{
+            display: contentLoaded ? 'block' : 'none'
+        }}>
+
+            <div className = "article-navigation">
+                <div 
+                    className = "article-navigation-tab"
+                    onClick = {handleClickTab}
+                >Objava</div>
+
+                <div 
+                    className = "article-navigation-tab"
+                    onClick = {handleClickTab}
+                >Tekst</div>
+
+                <div 
+                    className = "article-navigation-tab"
+                    onClick = {handleClickTab}
+                >Fotografija</div>
+
+                <div 
+                    className = "article-navigation-tab"
+                    onClick = {handleClickTab}
+                >Video</div>
+
+            </div>
+
+            <div className = "article-publish">
+                <div className="publish">
+                    {title !== '' && text !== '' && imgURL !== '' ?
+                        <div>
+                            <button className="saveBtn" onClick={handleSave}>Save</button>
+                            <label htmlFor="publishCheckbox">Objavljeno</label>
+                            <input
+                                id="publishCheckbox"
+                                name="publishCheckbox"
+                                type="checkbox"
+                                className="publishCheckbox"
+                                checked={published}
+                                onChange={handleCheck}
+                            ></input>
+                            <input
+                            type="number"
+                            min="0"
+                            max="10"
+                            onChange={handleNumber}
+                            value={position}
+                            style={{ display: showPosition }}
+                        ></input>
+                        </div>
+                        :
+                        <div></div>}              
+                </div>
+            </div>
+
+            <div className="article-text">
+
+                <select className="categories" value={category} onChange={handleSelect}>
+                    <option value="politics">Politics</option>
+                    <option value="business">Business</option>
+                    <option value="technology">Technology</option>
+                    <option value="entertainment">Entertainment</option>
+                    <option value="sports">Sports</option>
                 </select>
-                <label htmlFor = "source">Izvor</label>
-                <input 
-                    id = "source" 
-                    name = "source" 
-                    type = "text" 
-                    value = {source}
-                    onChange = {inputHandler}
-                    ></input>
-                <label htmlFor = "author">Autor</label>
-                <input 
-                    id = "author" 
-                    name = "author" 
-                    type = "text" 
-                    value = {author}
-                    onChange = {inputHandler}
-                    ></input>
-                <label htmlFor = "imgDescription">Opis fotografije</label>
-                <input 
-                    id = "imgDescription" 
-                    name = "imgDescription" 
-                    type = "text" 
-                    value = {imgDescription}
-                    onChange = {inputHandler}
+
+                <label htmlFor="source">Izvor</label>
+                <input
+                    id="source"
+                    name="source"
+                    type="text"
+                    value={source}
+                    onChange={inputHandler}
                 ></input>
-                <label htmlFor = "videoDescription">Opis video-snimka</label>
-                <input 
-                    id = "videoDescription" 
-                    name = "videoDescription" 
-                    type = "text" 
-                    value = {videoDescription}
-                    onChange = {inputHandler}
+                <label htmlFor="author">Autor</label>
+                <input
+                    id="author"
+                    name="author"
+                    type="text"
+                    value={author}
+                    onChange={inputHandler}
                 ></input>
-                
+                <label htmlFor="imgDescription">Opis fotografije</label>
+                <input
+                    id="imgDescription"
+                    name="imgDescription"
+                    type="text"
+                    value={imgDescription}
+                    onChange={inputHandler}
+                ></input>
+                <label htmlFor="videoDescription">Opis video-snimka</label>
+                <input
+                    id="videoDescription"
+                    name="videoDescription"
+                    type="text"
+                    value={videoDescription}
+                    onChange={inputHandler}
+                ></input>
+
                 <Title
                     title={title}
                     setTitle={setTitle}
                 />
-                <Subtitle 
+                <Subtitle
                     subtitle={subtitle}
                     setSubtitle={setSubtitle}
                 />
@@ -316,57 +381,38 @@ export default function Article({setShowCmsOverlay}) {
                     text={text}
                     setText={setText}
                 />
-                
-                <ChooseImage
+                <div className="preview">{paragraphs.map(prom => prom)}</div>
+
+                <Tags tagsArr={tagsArr} setTagsArr={setTagsArr} />
+            </div>
+
+            <div className = "article-photo">
+                <Photo
+                    imgURL={imgURL}
                     setImgURL={setImgURL}
                     setImgName={setImgName}
-                    setImgFile = {setImgFile}
-    
+                    setImgFile={setImgFile}
                 />
-                <ChooseVideo
+                <ImgCropper setImgURL={setImgURL} setImgFile={setImgFile} setImgName={setImgName} />
+            </div>
+
+            <div className = "article-video">
+                <Video
+                    videoURL={videoURL}
                     setVideoURL={setVideoURL}
                     setVideoName={setVideoName}
-                    setVideoFile = {setVideoFile}
-    
+                    setVideoFile={setVideoFile}
                 />
-                <Photo
-                    imgURL = {imgURL}
-                />
-                {videoURL !== 'none' && <Video
-                    videoURL = {videoURL}
-                />}
-                {title !== '' && text !== '' && imgURL !== '' ?
-                    <div>
-                        <button className="btn" onClick={handleSave}>Save</button>
-
-                        <label htmlFor = "publishCheckbox">Objavljeno</label>
-                        <input 
-                            id = "publishCheckbox" 
-                            name = "publishCheckbox" 
-                            type = "checkbox" 
-                            className = "publishCheckbox"
-                            checked = {published}
-                            onChange = {handleCheck}
-                        ></input>
-                    </div>
-
-                    :
-                    <div></div>}
             </div>
-           
-            <div className = "loadingArticle" style = {{
-                display: contentLoaded === true || isNewArticle === true? 'none' : 'block',
+
+            <div className="loadingArticle" style={{
+                display: contentLoaded === true || isNewArticle === true ? 'none' : 'block',
                 fontSize: '5rem',
                 fontWeight: 'bold',
                 textAlign: 'center',
                 pointerEvents: 'none'
-            }}>Loading...</div> 
-            
-            <Link to= {`/allArticles`}>
-                <button>Nazad na listu vesti</button>
-            </Link>
-            <div className = "preview">{paragraphs.map(prom => prom)}</div>
-            <Link to = "/" style={{ textDecoration: 'none' }}><div className = "homepageBtn">Homepage</div></Link>
+            }}>Loading...</div>
+
         </div>
     )
 }

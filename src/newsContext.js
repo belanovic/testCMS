@@ -11,6 +11,11 @@ function Provider(props) {
     const [articleVideoLoaded, setArticleVideoLoaded] = useState(false);
     const [showCmsOverlay, setShowCmsOverlay] = useState('none');
 
+    const [showHomepageBtn, setShowHomepageBtn] = useState('none');
+    const [allArticlesBtn, setAllArticlesBtn] = useState('none');
+    const [newArticleBtn, setNewArticleBtn] = useState('none');
+    const [showFrontend, setShowFrontend] = useState('none');
+
     useEffect(() => {
     }, [listLoaded])
 
@@ -27,7 +32,15 @@ function Provider(props) {
             articleVideoLoaded,
             setArticleVideoLoaded,
             showCmsOverlay,
-            setShowCmsOverlay
+            setShowCmsOverlay,
+            showHomepageBtn, 
+            setShowHomepageBtn,
+            allArticlesBtn,
+            setAllArticlesBtn,
+            newArticleBtn, 
+            setNewArticleBtn,
+            showFrontend,
+            setShowFrontend
         }}>
             {props.children}
         </context.Provider>

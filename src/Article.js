@@ -278,11 +278,14 @@ export default function Article({ setShowCmsOverlay }) {
         }) */
         setFrontpageNews(n);
 
+    }, [])
+
+    useEffect(function () {
         setShowHomepageBtn('inline-block');
         setAllArticlesBtn('inline-block');
         setNewArticleBtn('none');
         setShowFrontend('none');
-    }, [])
+    })
 
     return (
         <div className="article" style={{

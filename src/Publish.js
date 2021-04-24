@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import {publishArticle, getAllArticles} from './getDatabase.js';
 import { context } from './newsContext';
 
-export default function Publish({ id }) {
+export default function Publish({ id, published }) {
     const {listAllArticles, setListAllArticles, setListLoaded,
             showCmsOverlay, setShowCmsOverlay
             } = useContext(context);
@@ -23,8 +23,11 @@ export default function Publish({ id }) {
     }
 
     return (
-        <div className="publish">
-            <button onClick = {handleClick}>Publish</button>
+        <div className="allArticles-item-publish allArticles-item-part">
+            <button 
+                onClick = {handleClick}
+                style = {{display: !published? 'block' : 'none' }}
+            >Publish</button>
         </div>
     )
 }

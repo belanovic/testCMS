@@ -15,7 +15,7 @@ export default function App() {
     return (
         <div className = "cms">
             <div className = "cmsOverlay" ref = {cmsOverlay} style = {{display: showCmsOverlay}}></div>
-            <Header />
+            <Header showHomepageBtn = {false} showFrontend = {false}  allArticlesBtn = {false}  newArticleBtn = {false} />
             <Switch>
                 <Route exact path = "/">
                     <Homepage />

@@ -62,7 +62,7 @@ export default function Header() {
                     </Link>
                 </div>
                 <div className="login">
-                    <i class="fas fa-user-edit"></i>
+                    <i className="fas fa-user-edit"></i>
                 </div>
             </div>
 

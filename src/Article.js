@@ -81,8 +81,7 @@ export default function Article({ setShowCmsOverlay }) {
             setArticleImgLoaded(true);
             return
         }
-        const response = await getArticle(id);
-        const selectedArticle = await response.json();
+        const selectedArticle = await getArticle(id);
         setIsNewArticle(false);
         setTitle(selectedArticle.title);
         setSubtitle(selectedArticle.subtitle);

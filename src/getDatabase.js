@@ -7,14 +7,15 @@ export async function getAllArticles() {
         return allNews
     }
     catch (err) {
-        console.log(err);
+        console.log(err); 
     }
 }
 
 export async function getArticle(id) {
     try {
         const response = await fetch(`${HOST_BACKEND}/oneArticle/${id}`);
-        return response
+        const selectedArticle = await response.json();
+        return selectedArticle
     }
     catch(err) {
         console.log(err);

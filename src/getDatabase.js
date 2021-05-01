@@ -1,8 +1,16 @@
 import HOST_BACKEND from './hostBackend.js';
 
 export async function getAllArticles() {
+    console.log(localStorage.getItem('x-auth-token'));
     try {
-        const response = await fetch(`${HOST_BACKEND}/allArticles`);
+        const response = await fetch(`${HOST_BACKEND}/allArticles`, { 
+            headers: {
+                /* 'Content-Type': 'application/json',
+                'x-auth-token' : localStorage.getItem('x-auth-token') */
+                'Authorization' : 'Bearer ' + localStorage.getItem('x-auth-token')
+   
+            }
+        });
         const allNews = await response.json();
         return allNews
     }

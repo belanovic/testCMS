@@ -15,9 +15,15 @@ function Provider(props) {
     const [allArticlesBtn, setAllArticlesBtn] = useState('none');
     const [newArticleBtn, setNewArticleBtn] = useState('none');
     const [showFrontend, setShowFrontend] = useState('none');
+    const [formVisible, setFormVisible] = useState(false);
+    const [isLoggedIn, setLoggedIn] = useState(false);
 
     useEffect(() => {
-    }, [listLoaded])
+
+        setLoggedIn((prev) => {
+            return localStorage.getItem('x-auth-token')? true : false
+        })
+    }, [])
 
     return (
         <context.Provider value={{
@@ -29,18 +35,22 @@ function Provider(props) {
             setArticleDataLoaded,
             articleImgLoaded,
             setArticleImgLoaded,
-           /*  articleVideoLoaded,
-            setArticleVideoLoaded, */
+            /*  articleVideoLoaded,
+             setArticleVideoLoaded, */
             showCmsOverlay,
             setShowCmsOverlay,
-            showHomepageBtn, 
+            showHomepageBtn,
             setShowHomepageBtn,
             allArticlesBtn,
             setAllArticlesBtn,
-            newArticleBtn, 
+            newArticleBtn,
             setNewArticleBtn,
             showFrontend,
-            setShowFrontend
+            setShowFrontend,
+            formVisible,
+            setFormVisible,
+            isLoggedIn,
+            setLoggedIn
 
         }}>
             {props.children}

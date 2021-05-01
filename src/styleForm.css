@@ -1,0 +1,98 @@
+/* Form */
+
+.form-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+   /*  background: rgba(214, 214, 214, 0.5); */
+    min-height: 80vh;
+    padding-top: 2em;
+}
+
+/* .form-around2 {
+    padding: 2em 2em 2em 2em;
+    background: white;
+}
+.form-around1 {
+    padding: 3em 20em 3em 20em;
+    background: rgb(224, 224, 224);
+    min-height: 80vh;
+}
+ */
+.form {
+    margin: 0 10px 0 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* border: 1px solid black; */
+    box-shadow: 0 0 33px 0px rgb(151, 151, 151);
+    background: white;
+}
+.form-title {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.25rem;
+    width: 100%;
+    padding-bottom: 2em;
+}
+.sign-in, .sign-up {
+    width: 50%;
+    text-align: center;
+    caret-color: transparent;
+    font-size: 1.5rem;
+}
+.sign-in:hover, .sign-up:hover {
+    cursor: pointer;
+}
+.sign-in {
+    padding: 1em 0 1em 0;
+}
+.sign-up {
+    padding: 1em 0 1em 0;
+}
+.form-title .sign-up.isActive {
+    font-weight: bold;
+    color: green;
+}
+.form-title .sign-in.isActive {
+    font-weight: bold;
+    color: green;
+}
+.form-title .notActive {
+    background: rgba(197, 197, 197, 0.5);
+}
+.form-element {
+    margin: 0 2em 1em 2em;
+}
+.form-element > * {
+    display: block;
+    margin-bottom: 0.4em;
+}
+.form-element > input {
+    font-size: 1.5rem;
+    padding: 0.2em 0.5em 0.2em 0.5em;
+}
+
+.form-element > label {
+    font-size: 1rem;
+    text-align: center;
+}
+.form-send {
+    flex: 1;
+    width: 87%;
+}
+.form-send-button {
+    display: inline-block;
+    font-size: 1.25rem;
+    letter-spacing: 1px;
+    padding: 0.6em 0.6em 0.6em 0.6em;
+    width: 100%;
+    color: white;
+    background: green;
+    margin-bottom: 1em;
+}
+.form-send-button:hover {
+    cursor: pointer;
+}

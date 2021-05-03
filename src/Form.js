@@ -7,7 +7,7 @@ import Profile from './Profile.js';
 
 export default function Form() {
 
-    const { alphabet, isLoggedIn, setLoggedIn } = useContext(context);
+    const { alphabet, isLoggedIn, setLoggedIn, loggedUser, setLoggedUser } = useContext(context);
 
     const [signInisActive, setSignInIsActive] = useState(true);
     const [signUpisActive, setSignUpIsActive] = useState(false);
@@ -44,6 +44,10 @@ export default function Form() {
         setLoggedIn((prev) => {
              return localStorage.getItem('x-auth-token')? true : false
         })
+        setLoggedUser((prom) => {
+            return localStorage.getItem('x-auth-token')?
+                userAndToken[2] : ''
+        })
         console.log(userAndToken);
     }
 
@@ -57,7 +61,7 @@ export default function Form() {
         <>
             <div className="form-container">
                         {isLoggedIn?
-                        <Profile />
+                        <Profile loggedUser = {loggedUser}/>
                         :
                         <form className="form">
                             <div className="form-title">

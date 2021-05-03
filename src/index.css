@@ -37,6 +37,7 @@ body {
     color: white;
     margin: 0;
     font-style: italic;
+    display: inline-block;
 }
 .fa-react {
     color: white;
@@ -92,11 +93,36 @@ body {
 
 .login {
     cursor: pointer;
+    position: relative;
 }
 
 .fa-user-edit {
     font-size: 1.5rem;
     color: white;
+}
+.login-info {
+    color: white;
+    position: absolute;
+    width: 9em;
+
+    right: 70%;
+    line-height: 1.5;
+    text-align: center;
+    background: rgb(0, 110, 0);
+    letter-spacing: 1px;
+    padding: 0.3em 0.5em 0.3em 0.5em;
+    border-radius: 15px;
+    display: none;
+}
+.login-info-username {
+    font-size: 1rem;
+    font-weight: bold;
+}
+.login-info-title {
+    font-size: 0.8rem;
+}
+.login:hover .login-info {
+    display: block;
 }
 /* Homepage */
 

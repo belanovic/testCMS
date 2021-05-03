@@ -17,6 +17,7 @@ function Provider(props) {
     const [showFrontend, setShowFrontend] = useState('none');
     const [formVisible, setFormVisible] = useState(false);
     const [isLoggedIn, setLoggedIn] = useState(false);
+    const [loggedUser, setLoggedUser] = useState('');
 
     useEffect(() => {
 
@@ -35,8 +36,6 @@ function Provider(props) {
             setArticleDataLoaded,
             articleImgLoaded,
             setArticleImgLoaded,
-            /*  articleVideoLoaded,
-             setArticleVideoLoaded, */
             showCmsOverlay,
             setShowCmsOverlay,
             showHomepageBtn,
@@ -50,7 +49,10 @@ function Provider(props) {
             formVisible,
             setFormVisible,
             isLoggedIn,
-            setLoggedIn
+            setLoggedIn,
+            loggedUser, 
+            setLoggedUser
+            
 
         }}>
             {props.children}

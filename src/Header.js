@@ -4,7 +4,9 @@ import { context } from './newsContext.js';
 
 export default function Header() {
 
-    const { showHomepageBtn, allArticlesBtn, newArticleBtn, showFrontend, setFormVisible } = useContext(context);
+    const { showHomepageBtn, allArticlesBtn, 
+            newArticleBtn, showFrontend, setFormVisible, 
+            loggedIn, loggedUser } = useContext(context);
 
     return (
         <header className="header">
@@ -63,6 +65,10 @@ export default function Header() {
                 </div>
                 <div className="login">
                     <Link to = "/form"><i className="fas fa-user-edit" onClick = {() => setFormVisible(prev => !prev)}></i></Link>
+                    <div className = "login-info">
+                        <div className = "login-info-title">User logged in:</div>
+                        <div className = "login-info-username">{loggedUser.username}</div>
+                    </div>
                 </div>
             </div>
 

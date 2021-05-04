@@ -8,6 +8,7 @@
    /*  background: rgba(214, 214, 214, 0.5); */
     min-height: 80vh;
     padding-top: 2em;
+    background-image: url('https://firebasestorage.googleapis.com/v0/b/site-news-storage.appspot.com/o/site-news-images%2Ftypewriter6.jpg?alt=media&token=4be6d1d9-f64f-4ca0-a733-94969d18ef15');
 }
 
 /* .form-around2 {
@@ -66,7 +67,7 @@
 .form-element {
     margin: 0 2em 1em 2em;
 }
-.form-element > * {
+.form-element label {
     display: block;
     margin-bottom: 0.4em;
 }
@@ -95,4 +96,10 @@
 }
 .form-send-button:hover {
     cursor: pointer;
+}
+
+.form-element-condition span {
+    color: red;
+    font-size: 0.8rem;
+    font-weight: bold;
 }

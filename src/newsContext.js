@@ -22,9 +22,14 @@ function Provider(props) {
     useEffect(() => {
 
         setLoggedIn((prev) => {
-            return localStorage.getItem('x-auth-token')? true : false
+            return localStorage.getItem('x-auth-token') === 'none'? false : true
         })
     }, [])
+    useEffect(() => {
+
+        console.log('User is logged in? ' + isLoggedIn)
+        console.log('in local storage ' + localStorage.getItem('x-auth-token'))
+    }, [isLoggedIn])
 
     return (
         <context.Provider value={{
@@ -50,9 +55,9 @@ function Provider(props) {
             setFormVisible,
             isLoggedIn,
             setLoggedIn,
-            loggedUser, 
+            loggedUser,
             setLoggedUser
-            
+
 
         }}>
             {props.children}

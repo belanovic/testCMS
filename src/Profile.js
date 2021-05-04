@@ -7,7 +7,7 @@ export default function Profile({loggedUser}) {
 
     const handleSignOut = (e) => {
         e.preventDefault();
-        localStorage.removeItem('x-auth-token');
+        localStorage.setItem('x-auth-token', 'none');
         setLoggedIn(false);
         window.location.href = '/';
     }

@@ -39,14 +39,18 @@ export default function Form() {
     const handleClickSignIn = async (e) => {
         e.preventDefault();
         const userAndToken = await loginUser(usernameSignIn, passwordSignIn);
+        if(userAndToken[0] === false) return;
         const token = userAndToken[3];
         localStorage.setItem('x-auth-token', token);
+
         setLoggedIn((prev) => {
-             return localStorage.getItem('x-auth-token')? true : false
+             console.log(localStorage.getItem('x-auth-token'))
+             const v = localStorage.getItem('x-auth-token') === 'none'? false : true;
+             return v
         })
         setLoggedUser((prom) => {
-            return localStorage.getItem('x-auth-token')?
-                userAndToken[2] : ''
+            const v = localStorage.getItem('x-auth-token') === 'none'? '' : userAndToken[2];
+            return v
         })
         console.log(userAndToken);
     }
@@ -76,7 +80,7 @@ export default function Form() {
                             </div>
 
                             <div 
-                                className="form-element firstName"
+                                className="form-element 3"
                                 style = {{display: signUpisActive? 'block' : 'none'}}
                             >
                                 <label htmlFor="firstName" className="firstName-label">Ime</label>
@@ -86,6 +90,8 @@ export default function Form() {
                                     type="text"
                                     value = {firstName}
                                     onChange = {(e) => handleChange(e, setFirstName)}
+
+                                    maxLength = "6"
                                 ></input>
                             </div>
 

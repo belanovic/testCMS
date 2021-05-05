@@ -20,9 +20,10 @@ function Provider(props) {
     const [loggedUser, setLoggedUser] = useState('');
 
     useEffect(() => {
-
         setLoggedIn((prev) => {
-            return localStorage.getItem('x-auth-token') === 'none'? false : true
+            const storageToken = localStorage.getItem('x-auth-token');
+            return storageToken === 'none' || storageToken === null || storageToken === undefined?
+                false : true
         })
     }, [])
     useEffect(() => {

@@ -82,13 +82,29 @@ body {
     background: red;
 }
 
+.header-homepageBtn:hover {
+    background: rgb(255, 76, 76)
+}
+
 .header-allArticlesBtn {
     background: red;
+}
+
+.header-allArticlesBtn:hover {
+    background: rgb(255, 76, 76)
 }
 
 .header-newArticleBtn {
     background: green;
     margin-right: 4em;
+}
+
+.header-newArticleBtn:hover {
+    background:rgb(0, 150, 0)
+}
+
+.header-homepageBtn:active, .header-allArticlesBtn:active, .header-newArticleBtn:active {
+    transform: scale(0.95, 0.90);
 }
 
 .login {
@@ -135,6 +151,7 @@ body {
     background-repeat: no-repeat;
     background-position-x: right;
     background-position-y: bottom;
+    
 }
 .homepage-links {
     width: 80%;
@@ -149,6 +166,9 @@ body {
     border-radius: 10%;
     box-shadow: 0 0 50px 0px black;
     background: rgb(189, 0, 0, 0.5);
+}
+.homepage-newArticleBtn:active, .homepage-allArticlesBtn:active, .homepage-frontpage-order:active {
+    transform: scale(0.99, 0.98);
 }
 .homepage-newArticleBtn:hover, .homepage-allArticlesBtn:hover, .homepage-frontpage-order:hover {
     background: rgb(1, 122, 1, 0.5);

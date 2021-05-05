@@ -5,22 +5,15 @@
     flex-direction: row;
     justify-content: center;
     align-items: flex-start;
-   /*  background: rgba(214, 214, 214, 0.5); */
-    min-height: 80vh;
+    min-height: 100vh;
     padding-top: 2em;
     background-image: url('https://firebasestorage.googleapis.com/v0/b/site-news-storage.appspot.com/o/site-news-images%2Ftypewriter6.jpg?alt=media&token=4be6d1d9-f64f-4ca0-a733-94969d18ef15');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position-x: right;
+    background-position-y: bottom;
 }
 
-/* .form-around2 {
-    padding: 2em 2em 2em 2em;
-    background: white;
-}
-.form-around1 {
-    padding: 3em 20em 3em 20em;
-    background: rgb(224, 224, 224);
-    min-height: 80vh;
-}
- */
 .form {
     margin: 0 10px 0 10px;
     display: flex;
@@ -28,8 +21,8 @@
     justify-content: center;
     align-items: center;
     /* border: 1px solid black; */
-    box-shadow: 0 0 33px 0px rgb(151, 151, 151);
-    background: white;
+    box-shadow: 0 0 53px 10px rgb(0, 0, 0);
+    background: rgba(255, 255, 255, 1);
 }
 .form-title {
     display: flex;
@@ -94,8 +87,12 @@
     background: green;
     margin-bottom: 1em;
 }
+.form-send-button:active {
+    transform: scale(0.99, 0.92);
+}
 .form-send-button:hover {
     cursor: pointer;
+    background: rgb(0, 150, 0);
 }
 
 .form-element-condition span {

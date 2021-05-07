@@ -163,6 +163,17 @@ export async function getByCategory(category) {
     }
 }
 
+export async function getByDate(date) {
+    try {
+        const response = await fetch(`${HOST_BACKEND}/date/${date}`);
+        const newsByDate = await response.json();
+        return newsByDate
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
+
 export async function publishArticle(id) {
     try {
         const response = await fetch(`${HOST_BACKEND}/publishArticle/${id}`, {

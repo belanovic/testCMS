@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { context } from './newsContext';
 import Footer from './Footer';
 import Form from './Form.js';
+import Order from './Order.js';
 
 export default function App() {
     const cmsOverlay = useRef(null);
@@ -24,6 +25,7 @@ export default function App() {
                         <Homepage />
                     </Route>
                     <Route path="/form"><Form /></Route>
+                    <Route path="/order"><Order /></Route>
                     <Route path='/allArticles'>
                         <AllArticles />
                     </Route>

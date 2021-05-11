@@ -135,7 +135,6 @@ export async function getFrontpageNews() {
 
 export async function updateArticlePosition(id, position) {
     try {
-        console.log(id, position)
         const updatedArticle = await fetch(`${HOST_BACKEND}/articlePosition/${id}`, {
             method: 'PUT',
             headers: {
@@ -164,10 +163,21 @@ export async function getByCategory(category) {
 }
 
 export async function getByDate(date) {
+    console.log('poslat zahtev');
     try {
-        const response = await fetch(`${HOST_BACKEND}/date/${date}`);
-        const newsByDate = await response.json();
-        return newsByDate
+        const response = await fetch(`${HOST_BACKEND}/articlesByDate`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'text/plain'
+            },
+            body: JSON.stringify({
+                day: date.day,
+                month: date.month,
+                year: date.year
+            })
+        })
+        const articlesByDate = response.json();
+        return articlesByDate
     }
     catch (err) {
         console.log(err)

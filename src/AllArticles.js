@@ -17,7 +17,9 @@ export default function AllArticles() {
 
     useEffect(async function () {
         const allNews = await getAllArticles();
-        console.log(allNews)
+        console.log(allNews);
+        allNews.map((prom) => console.log(/* 'Naslov: ' + prom.title +  */'pozicija: ' + prom.position))
+        allNews.map((prom) => console.log('Naslov: ' + prom.title + 'pozicija: ' + prom.position))
         const promiseResolveA = await setListAllArticles(allNews);
         const promiseResolveB = await setListLoaded(true);
 

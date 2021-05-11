@@ -26,11 +26,17 @@ function Provider(props) {
                 false : true
         })
     }, [])
-    useEffect(() => {
+  /*   useEffect(() => {
 
         console.log('User is logged in? ' + isLoggedIn)
         console.log('in local storage ' + localStorage.getItem('x-auth-token'))
-    }, [isLoggedIn])
+    }, [isLoggedIn]) */
+
+/*     useEffect(async () => {
+        const n = listAllArticles;
+        n.sort((a, b) => a.position - b.position);
+        console.log(n)
+    }, [listAllArticles]) */
 
     return (
         <context.Provider value={{

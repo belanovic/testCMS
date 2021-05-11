@@ -7,10 +7,10 @@ body {
     
 }
 #root {
-    height: 100%;
+    /* height: 100%; */
 }
 .cms {
-    height: 100vh;
+    /* height: 100vh; */
     display: flex;
     flex-direction: column;
 }
@@ -414,7 +414,7 @@ body {
         font-size: 12px;
     }
     .cms {
-        height: 50vh;
+        height: 100%;
     }
     .homepage-links {
         height: 100%;

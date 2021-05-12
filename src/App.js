@@ -16,7 +16,7 @@ export default function App() {
 
     return (<>
         {isLoggedIn ?
-            <div className="cms" style = {{height: window.innerHeight + 'px'}}>
+            <div className="cms" /* style = {{height: window.innerHeight + 'px'}} */>
 
                 <div className="cmsOverlay" ref={cmsOverlay} style={{ display: showCmsOverlay }}></div>
                 <Header showHomepageBtn={false} showFrontend={false} allArticlesBtn={false} newArticleBtn={false} />

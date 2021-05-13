@@ -65,7 +65,6 @@ function Provider(props) {
             loggedUser,
             setLoggedUser
 
-
         }}>
             {props.children}
         </context.Provider>

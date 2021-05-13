@@ -7,7 +7,8 @@ import Profile from './Profile.js';
 
 export default function Form() {
 
-    const { alphabet, isLoggedIn, setLoggedIn, loggedUser, setLoggedUser } = useContext(context);
+    const { alphabet, isLoggedIn, setLoggedIn, 
+            loggedUser, setLoggedUser, setLoggedUsername } = useContext(context);
 
     const [signInisActive, setSignInIsActive] = useState(true);
     const [signUpisActive, setSignUpIsActive] = useState(false);
@@ -53,6 +54,7 @@ export default function Form() {
         })
         setLoggedUser((prom) => {
             const v = localStorage.getItem('x-auth-token') === 'none'? '' : userAndToken[2];
+            if(v !== 'none') localStorage.setItem('loggedUsername', userAndToken[2].username);
             return v
         })
         console.log(userAndToken);

@@ -8,6 +8,7 @@ export default function Profile({loggedUser}) {
     const handleSignOut = (e) => {
         e.preventDefault();
         localStorage.setItem('x-auth-token', 'none');
+        localStorage.setItem('loggedUsername', null);
         setLoggedIn(false);
         window.location.href = '/';
     }

@@ -1,5 +1,6 @@
-import react, { useState, useEffect } from 'react';
-import { getByDate } from './getDatabase';
+import react, { useState, useEffect, useContext } from 'react';
+import { getByDate, getFrontpageNews } from './getDatabase';
+import { context } from './newsContext.js';
 
 const years = [];
 for (let i = 2020; i <= new Date().getFullYear(); i++) {
@@ -12,6 +13,9 @@ export default function Order() {
     const [day, setDay] = useState(new Date().getDate());
     const [month, setMonth] = useState(new Date().getMonth());
     const [year, setYear] = useState(new Date().getFullYear());
+    const [frontpageNews, setFrontpageNews] = useState('');
+
+    const {setShowHomepageBtn, setAllArticlesBtn, setNewArticleBtn, setShowFrontend} = useContext(context);
 
     const handleChange = (e) => {
         let value = e.target.value;
@@ -25,7 +29,7 @@ export default function Order() {
             arrValue.shift();
             value = arrValue.join('');
         }
-        setDay(value);
+        setDay(parseInt(value));
         return;
     }
 
@@ -56,14 +60,27 @@ export default function Order() {
                 month: month,
                 year: year
             }
+            console.log(d)
             return d;
         })
     }, [day, month, year])
 
+    useEffect(() => {
+        setShowHomepageBtn('inline-block');
+        setAllArticlesBtn('inline-block');
+        setNewArticleBtn('inline-block');
+        setShowFrontend('none');
+    })
+
+    useEffect(async () => {
+        const n = await getFrontpageNews();
+        setFrontpageNews(n);
+    }, [])
+
     return (
         <div className="order">
-            <div className="date">
-                <div className="dateElement">
+            <div className="order-date">
+                <div className="order-dateElement">
                     <label htmlFor="dateInput">Dan</label>
                     <input
                         type="number"
@@ -74,7 +91,7 @@ export default function Order() {
                         onChange={handleChange}
                     ></input>
                 </div>
-                <div className="dateElement">
+                <div className="order-dateElement">
                     <select onChange={handleSelect} value={month} name="month">
                         <option className="month-option" value="0">Januar</option>
                         <option className="month-option" value="1">Februar</option>
@@ -90,14 +107,20 @@ export default function Order() {
                         <option className="month-option" value="11">Decembar</option>
                     </select>
                 </div>
-                <div className="dateElement">
+                <div className="order-dateElement">
                     <select onChange={handleSelect} value={year} name="year">
                         {years.map((prom, i) => <option className="year-option" key={i} value={prom}>{prom}</option>)}
                     </select>
                 </div>
-                <div className="dateElement">
-                    <button className="dateBtn" onClick={handleClick}>Prikaži</button>
+                <div className="order-dateElement">
+                    <button className="order-dateBtn" onClick={handleClick}>Prikaži</button>
                 </div>
+            </div>
+            <div className = "order-articles">
+                {/* {newsByDate && newsByDate.map((article, i) => <div key = {i}>{article.title}</div> )} */}
+                {frontpageNews && frontpageNews.map(
+                    (article, i) => <div key = {i} className = "order-articles-item">{article.title}</div> 
+                )}
             </div>
         </div>
     )

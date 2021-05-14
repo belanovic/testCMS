@@ -1,6 +1,7 @@
 import react, { useState, useEffect, useContext } from 'react';
 import { getByDate, getFrontpageNews } from './getDatabase';
 import { context } from './newsContext.js';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
 const years = [];
 for (let i = 2020; i <= new Date().getFullYear(); i++) {
@@ -15,7 +16,7 @@ export default function Order() {
     const [year, setYear] = useState(new Date().getFullYear());
     const [frontpageNews, setFrontpageNews] = useState('');
 
-    const {setShowHomepageBtn, setAllArticlesBtn, setNewArticleBtn, setShowFrontend} = useContext(context);
+    const { setShowHomepageBtn, setAllArticlesBtn, setNewArticleBtn, setShowFrontend } = useContext(context);
 
     const handleChange = (e) => {
         let value = e.target.value;
@@ -53,6 +54,10 @@ export default function Order() {
         console.log(result)
     }
 
+    const onDragEnd = () => {
+        console.log('onDragEnd')
+    }
+
     useEffect(async (prom) => {
         setDate((prev) => {
             const d = {
@@ -78,50 +83,69 @@ export default function Order() {
     }, [])
 
     return (
-        <div className="order">
-            <div className="order-date">
-                <div className="order-dateElement">
-                    <label htmlFor="dateInput">Dan</label>
-                    <input
-                        type="number"
-                        name="day"
-                        id="dateInput"
-                        className="dateInput"
-                        value={day}
-                        onChange={handleChange}
-                    ></input>
+        <DragDropContext onDragEnd={onDragEnd}>
+            <div className="order">
+                <div className="order-date">
+                    <div className="order-dateElement">
+                        <label htmlFor="dateInput">Dan</label>
+                        <input
+                            type="number"
+                            name="day"
+                            id="dateInput"
+                            className="dateInput"
+                            value={day}
+                            onChange={handleChange}
+                        ></input>
+                    </div>
+                    <div className="order-dateElement">
+                        <select onChange={handleSelect} value={month} name="month">
+                            <option className="month-option" value="0">Januar</option>
+                            <option className="month-option" value="1">Februar</option>
+                            <option className="month-option" value="2">Mart</option>
+                            <option className="month-option" value="3">April</option>
+                            <option className="month-option" value="4">Maj</option>
+                            <option className="month-option" value="5">Jun</option>
+                            <option className="month-option" value="6">Jul</option>
+                            <option className="month-option" value="7">Avgust</option>
+                            <option className="month-option" value="8">Septembar</option>
+                            <option className="month-option" value="9">Oktobar</option>
+                            <option className="month-option" value="10">Novembar</option>
+                            <option className="month-option" value="11">Decembar</option>
+                        </select>
+                    </div>
+                    <div className="order-dateElement">
+                        <select onChange={handleSelect} value={year} name="year">
+                            {years.map((prom, i) => <option className="year-option" key={i} value={prom}>{prom}</option>)}
+                        </select>
+                    </div>
+                    <div className="order-dateElement">
+                        <button className="order-dateBtn" onClick={handleClick}>Prikaži</button>
+                    </div>
                 </div>
-                <div className="order-dateElement">
-                    <select onChange={handleSelect} value={month} name="month">
-                        <option className="month-option" value="0">Januar</option>
-                        <option className="month-option" value="1">Februar</option>
-                        <option className="month-option" value="2">Mart</option>
-                        <option className="month-option" value="3">April</option>
-                        <option className="month-option" value="4">Maj</option>
-                        <option className="month-option" value="5">Jun</option>
-                        <option className="month-option" value="6">Jul</option>
-                        <option className="month-option" value="7">Avgust</option>
-                        <option className="month-option" value="8">Septembar</option>
-                        <option className="month-option" value="9">Oktobar</option>
-                        <option className="month-option" value="10">Novembar</option>
-                        <option className="month-option" value="11">Decembar</option>
-                    </select>
-                </div>
-                <div className="order-dateElement">
-                    <select onChange={handleSelect} value={year} name="year">
-                        {years.map((prom, i) => <option className="year-option" key={i} value={prom}>{prom}</option>)}
-                    </select>
-                </div>
-                <div className="order-dateElement">
-                    <button className="order-dateBtn" onClick={handleClick}>Prikaži</button>
-                </div>
+
+                <Droppable droppableId="order-articles-dpl">
+                    {(provided) => {
+                        return <div ref = {provided.innerRef} {...provided.droppableProps} className="order-articles">
+                            {frontpageNews && frontpageNews.map(
+                                (article, i) => <Draggable key = {i} index = {i} draggableId = {`order-articles-item-drg${i}`}>
+                                                    {(provided) => {
+                                                        return <div 
+                                                                    ref = {provided.innerRef} 
+                                                                    {...provided.draggableProps}
+                                                                    {...provided.dragHandleProps} 
+                                                                    key={i} className="order-articles-item"
+                                                                >
+                                                                {article.title}
+                                                                </div>  
+                                                    }}
+                                                </Draggable>
+                            )}
+                            {provided.placeholder}
+                        </div>
+                    }
+                    }
+                </Droppable>
             </div>
-            <div className = "order-articles">
-                {/* {newsByDate && newsByDate.map((article, i) => <div key = {i}>{article.title}</div> )} */}
-                {frontpageNews && frontpageNews.map(
-                    (article, i) => <div key = {i} className = "order-articles-item">{article.title}</div> 
-                )}
-            </div>
-        </div>
+        </DragDropContext>
     )
 }

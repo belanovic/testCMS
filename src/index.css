@@ -406,6 +406,27 @@ body {
     border-top: 2px solid black;
 }
 
+.order-send {
+    text-align: center;
+}
+
+.order-send-button {
+    width: 15%;
+    font-size: 1.25rem;
+    letter-spacing: 1px;
+    padding: 0.6em 0.6em 0.6em 0.6em;
+    color: white;
+    background: green;
+    margin-bottom: 1em;
+}
+.order-send-button:active {
+    transform: scale(0.99, 0.92);
+}
+.order-send-button:hover {
+    cursor: pointer;
+    background: rgb(0, 150, 0);
+}
+
 /* Footer */
 
 .footer {

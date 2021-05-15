@@ -151,6 +151,25 @@ export async function updateArticlePosition(id, position) {
     }
 }
 
+export async function updateFrontpage(idAndPositionArr) {
+    try {
+        const response = await fetch(`${HOST_BACKEND}/updateFrontpage`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'text/plain'
+            },
+            body: JSON.stringify({
+                idAndPositionArr: idAndPositionArr
+            })
+        })
+        const updatedFrontpage = response.json();
+        return updatedFrontpage
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
+
 export async function getByCategory(category) {
     try {
         const response = await fetch(`${HOST_BACKEND}/category/${category}`);

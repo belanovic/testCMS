@@ -23,6 +23,7 @@ export default function Article({ setShowCmsOverlay }) {
     const [tabTextVisibility, setTabTextVisibility] = useState('block')
     const [tabPhotoVisibility, setTabPhotoVisibility] = useState('none')
     const [tabVideoVisibility, setTabVideoVisibility] = useState('none')
+    const [activeTab, setActiveTab]  = useState(1);
 
 
     const [frontpageNews, setFrontpageNews] = useState('');
@@ -245,7 +246,7 @@ export default function Article({ setShowCmsOverlay }) {
         }
     }
     const handleClickTab = (tab) => {
-
+        setActiveTab(tab);
         const arr = [setTabPublishVisibility, setTabTextVisibility, 
                     setTabPhotoVisibility, setTabVideoVisibility];
 
@@ -293,22 +294,22 @@ export default function Article({ setShowCmsOverlay }) {
 
             <div className = "article-navigation">
                 <div 
-                    className = "article-navigation-tab"
+                    className = {`article-navigation-tab ${activeTab === 0? 'active-tab' : ''}`}
                     onClick = {() => {handleClickTab(0)}}
                     >Objava</div>
 
                 <div 
-                    className = "article-navigation-tab"
+                    className = {`article-navigation-tab ${activeTab === 1? 'active-tab' : ''}`}
                     onClick = {() => {handleClickTab(1)}}
                     >Tekst</div>
 
                 <div 
-                    className = "article-navigation-tab"
+                    className = {`article-navigation-tab ${activeTab === 2? 'active-tab' : ''}`}
                     onClick = {() => {handleClickTab(2)}}
                     >Fotografija</div>
 
                 <div 
-                    className = "article-navigation-tab"
+                    className = {`article-navigation-tab ${activeTab === 3? 'active-tab' : ''}`}
                     onClick = {() => {handleClickTab(3)}}
                 >Video</div>
 

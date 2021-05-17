@@ -57,7 +57,6 @@ export default function Order() {
 
     const onDragEnd = (result) => {
         const { destination, source, reason } = result;
-        // Not a thing to do...
         if (!destination || reason === 'CANCEL') {
             return;
         }
@@ -87,7 +86,9 @@ export default function Order() {
         
         })
         const updatedFrontpage = await updateFrontpage(idAndPositionArr);
-        console.log(updatedFrontpage)
+        updatedFrontpage.sort((a,b) => a.position - b.position).forEach((prom) => {
+            if(prom.position > 0) console.log(prom.title)
+        })
       }
 
     useEffect(async (prom) => {
@@ -153,6 +154,7 @@ export default function Order() {
                 <div className="order-dateElement">
                     <button className="order-dateBtn" onClick={handleClick}>Prikaži</button>
                 </div>
+                <div>{newsByDate.map((prom) => <div>{prom.title}</div>)}</div>
             </div>
             <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId="order-articles-dpl">

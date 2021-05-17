@@ -95,7 +95,7 @@ export async function updateArticle({id, title, subtitle, text,  paragraphs,
                 imgDescription: imgDescription,
                 videoDescription: videoDescription,
                 source: source,
-                author: author,
+                author: author, 
                 tagsArr: tagsArr
             })
         })

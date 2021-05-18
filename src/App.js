@@ -9,6 +9,7 @@ import { context } from './newsContext';
 import Footer from './Footer';
 import Form from './Form.js';
 import Order from './Order.js';
+import SearchDate from './SearchDate';
 
 export default function App() {
     const cmsOverlay = useRef(null);
@@ -26,6 +27,7 @@ export default function App() {
                     </Route>
                     <Route path="/form"><Form /></Route>
                     <Route path="/order"><Order /></Route>
+                    <Route path="/search-date"><SearchDate /></Route>
                     <Route path='/allArticles'>
                         <AllArticles />
                     </Route>

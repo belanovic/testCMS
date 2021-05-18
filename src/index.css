@@ -399,12 +399,50 @@ body {
 
 /* ========== Order ========= */
 
+.order {
+    padding-top: 2em;
+}
+
+.order-articles {
+    margin-bottom: 1em;
+}
+
 .order-articles-item {
     font-size: 1.5rem;
     font-weight: bold;
     font-family: Arial, Helvetica, sans-serif;
-    margin-bottom: 0.8em;
+    padding: 1em 0 1em 0;
     margin-left: 0.3em;
+    display: flex;
+    align-items: center;
+    color: white;
+}
+.order-articles-item:nth-child(odd) {
+    background: rgb(0, 0, 175)
+}
+.order-articles-item:nth-child(even) {
+    background: blue;
+}
+.order-articles-item-number {
+    width: 2em;
+    margin-left: 1em;
+    font-size: 1.5rem;
+}
+.order-articles-item-title {
+    font-size: 1.25rem;
+}
+.order-articles-item-edit  {
+    margin-left: auto;
+    margin-right: 1em;
+}
+.order-articles-item-edit a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.order-articles-item-space {
+    height: 2em;
 }
 /* .order-articles-item:nth-child(1) {
     border-top: 2px solid black;

@@ -1,59 +1,16 @@
 import react, { useState, useEffect, useContext } from 'react';
-import { getByDate, getFrontpageNews, updateFrontpage } from './getDatabase';
+import { getFrontpageNews, updateFrontpage } from './getDatabase';
 import { context } from './newsContext.js';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import {Link} from 'react-router-dom';
 
-const years = [];
-for (let i = 2020; i <= new Date().getFullYear(); i++) {
-    years.push(i);
-}
+
 
 export default function Order() {
-    const [newsByDate, setNewsByDate] = useState([]);
-    const [date, setDate] = useState({});
-    const [day, setDay] = useState(new Date().getDate());
-    const [month, setMonth] = useState(new Date().getMonth());
-    const [year, setYear] = useState(new Date().getFullYear());
     const [frontpageNews, setFrontpageNews] = useState('');
     const [reorderedArticles, setreorderedArticles] = useState('');
 
     const { setShowHomepageBtn, setAllArticlesBtn, setNewArticleBtn, setShowFrontend } = useContext(context);
-
-    const handleChange = (e) => {
-        let value = e.target.value;
-        if (value === '') {
-            setDay(value);
-            return
-        }
-        if (value < 1 || value > 31) return;
-        let arrValue = value.toString().split('');
-        if (arrValue[0] === '0') {
-            arrValue.shift();
-            value = arrValue.join('');
-        }
-        setDay(parseInt(value));
-        return;
-    }
-
-    const handleSelect = (e) => {
-        const value = e.target.value;
-        const name = e.target.name;
-        if (name === 'month') {
-            setMonth(parseInt(value));
-            return
-        }
-        if (name === 'year') {
-            setYear(parseInt(value));
-            return
-        }
-    }
-
-    const handleClick = async (e) => {
-        e.preventDefault();
-        const result = await getByDate(date);
-        setNewsByDate(result);
-        console.log(result)
-    }
 
     const onDragEnd = (result) => {
         const { destination, source, reason } = result;
@@ -83,24 +40,13 @@ export default function Order() {
                 newPosition: i + 1
             }
             return idAndPosition
-        
+
         })
         const updatedFrontpage = await updateFrontpage(idAndPositionArr);
-        updatedFrontpage.sort((a,b) => a.position - b.position).forEach((prom) => {
-            if(prom.position > 0) console.log(prom.title)
+        updatedFrontpage.sort((a, b) => a.position - b.position).forEach((prom) => {
+            if (prom.position > 0) console.log(prom.title)
         })
-      }
-
-    useEffect(async (prom) => {
-        setDate((prev) => {
-            const d = {
-                day: day,
-                month: month,
-                year: year
-            }
-            return d;
-        })
-    }, [day, month, year])
+    }
 
     useEffect(() => {
         setShowHomepageBtn('inline-block');
@@ -118,44 +64,6 @@ export default function Order() {
     return (
 
         <div className="order">
-            <div className="order-date">
-                <div className="order-dateElement">
-                    <label htmlFor="dateInput">Dan</label>
-                    <input
-                        type="number"
-                        name="day"
-                        id="dateInput"
-                        className="dateInput"
-                        value={day}
-                        onChange={handleChange}
-                    ></input>
-                </div>
-                <div className="order-dateElement">
-                    <select onChange={handleSelect} value={month} name="month">
-                        <option className="month-option" value="0">Januar</option>
-                        <option className="month-option" value="1">Februar</option>
-                        <option className="month-option" value="2">Mart</option>
-                        <option className="month-option" value="3">April</option>
-                        <option className="month-option" value="4">Maj</option>
-                        <option className="month-option" value="5">Jun</option>
-                        <option className="month-option" value="6">Jul</option>
-                        <option className="month-option" value="7">Avgust</option>
-                        <option className="month-option" value="8">Septembar</option>
-                        <option className="month-option" value="9">Oktobar</option>
-                        <option className="month-option" value="10">Novembar</option>
-                        <option className="month-option" value="11">Decembar</option>
-                    </select>
-                </div>
-                <div className="order-dateElement">
-                    <select onChange={handleSelect} value={year} name="year">
-                        {years.map((prom, i) => <option className="year-option" key={i} value={prom}>{prom}</option>)}
-                    </select>
-                </div>
-                <div className="order-dateElement">
-                    <button className="order-dateBtn" onClick={handleClick}>Prikaži</button>
-                </div>
-                <div>{newsByDate.map((prom) => <div>{prom.title}</div>)}</div>
-            </div>
             <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId="order-articles-dpl">
                     {(provided) => {
@@ -163,14 +71,27 @@ export default function Order() {
                             {reorderedArticles && reorderedArticles.map(
                                 (article, i) => <Draggable key={i} index={i} draggableId={`order-articles-item-drg${i}`}>
                                     {(provided) => {
-                                        return <div
+                                        return <><div
                                             ref={provided.innerRef}
                                             {...provided.draggableProps}
                                             {...provided.dragHandleProps}
                                             key={i} className="order-articles-item"
                                         >
-                                            {article.title}
+                                            <div
+                                                className="order-articles-item-number"
+                                            >{i + 1}.</div>
+                                            <div
+                                                className="order-articles-item-title"
+                                            >{article.title}</div>
+                                            <div
+                                                 className="order-articles-item-edit"
+                                            >
+                                                <Link to = '/search-date'>Promeni</Link>
+                                            </div>
                                         </div>
+                                        {i === 4 && <div className = "order-articles-item-space"></div>}
+                                        {i === 8 && <div className = "order-articles-item-space"></div>}
+                                        </>
                                     }}
                                 </Draggable>
                             )}
@@ -180,10 +101,10 @@ export default function Order() {
                     }
                 </Droppable>
             </DragDropContext>
-            <div className = "order-send">
-                <button 
-                    className = "order-send-button"
-                    onClick = {handleClickOrder}
+            <div className="order-send">
+                <button
+                    className="order-send-button"
+                    onClick={handleClickOrder}
                 >Uredi</button>
             </div>
         </div>

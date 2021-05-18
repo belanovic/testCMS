@@ -34,7 +34,7 @@ export default function Homepage() {
                     </Link>
                 </div>
                 <div className="homepage-frontpage-order">
-                    <Link to="/order">
+                    <Link to="/order/fromHomepage">
                         <div
                             className="homepage-frontpage-order-text"
                         >Set the frontpage</div>

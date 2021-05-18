@@ -1,6 +1,7 @@
 import react, { useState, useEffect, useContext } from 'react';
 import { getByDate } from './getDatabase';
-import {Link} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
+import {context} from './newsContext';
 
 const years = [];
 for (let i = 2020; i <= new Date().getFullYear(); i++) {
@@ -13,6 +14,10 @@ export default function SearchDate() {
     const [day, setDay] = useState(new Date().getDate());
     const [month, setMonth] = useState(new Date().getMonth());
     const [year, setYear] = useState(new Date().getFullYear());
+    const [selectedArticle, setSelectedArticle] = useState('');
+
+    const {reorderedArticles, setreorderedArticles} = useContext(context);
+    const {index} = useParams();
 
     const handleChange = (e) => {
         let value = e.target.value;
@@ -43,11 +48,26 @@ export default function SearchDate() {
         }
     }
 
+
     const handleClick = async (e) => {
         e.preventDefault();
         const result = await getByDate(date);
         setNewsByDate(result);
         console.log(result)
+    }
+
+    const handleSelectArticle = (e) => {
+        const value = e.target.value;
+        setSelectedArticle(value);
+    }
+
+    const handleSave = (e) => {
+        console.log(newsByDate)
+        setreorderedArticles((prev) => {
+            let art = prev;
+            art[index] = newsByDate[selectedArticle];
+            return art
+        })
     }
 
     useEffect(async (prom) => {
@@ -100,17 +120,21 @@ export default function SearchDate() {
                 <div className="order-dateElement">
                     <button className="order-dateBtn" onClick={handleClick}>Prikaži</button>
                 </div>
-                <select className="order-selected-articles">
-                    {newsByDate.map((prom, i) => {
-                        return <option key = {i}>
-                                   {prom.title}
-                               </option>
-                    }
-                    )}
+                <select 
+                    className="order-selected-articles"
+                    value = {selectedArticle}
+                    onChange = {handleSelectArticle}
+                >
+                        {newsByDate.map((prom, i) => {
+                            return <option key = {i} value = {i}>
+                                    {prom.title}
+                                </option>
+                        }
+                        )}
                 </select>
             </div>
-            <div className = "order-date-save">
-                <Link to = "/order">Sačuvaj</Link>
+            <div className = "order-date-save" onClick = {handleSave}>
+                <Link to = "/order/fromSearch">Sačuvaj</Link>
             </div>
         </div>
 

@@ -2,15 +2,14 @@ import react, { useState, useEffect, useContext } from 'react';
 import { getFrontpageNews, updateFrontpage } from './getDatabase';
 import { context } from './newsContext.js';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import {Link} from 'react-router-dom';
-
-
+import {Link, useParams} from 'react-router-dom';
 
 export default function Order() {
-    const [frontpageNews, setFrontpageNews] = useState('');
-    const [reorderedArticles, setreorderedArticles] = useState('');
 
-    const { setShowHomepageBtn, setAllArticlesBtn, setNewArticleBtn, setShowFrontend } = useContext(context);
+    const {option} = useParams();
+   
+    const { reorderedArticles, setreorderedArticles, frontpageNews, setFrontpageNews,
+            setShowHomepageBtn, setAllArticlesBtn, setNewArticleBtn, setShowFrontend } = useContext(context);
 
     const onDragEnd = (result) => {
         const { destination, source, reason } = result;
@@ -56,6 +55,7 @@ export default function Order() {
     })
 
     useEffect(async () => {
+        if(option === 'fromSearch') return;
         const n = await getFrontpageNews();
         setFrontpageNews(n);
         setreorderedArticles(n);
@@ -86,7 +86,7 @@ export default function Order() {
                                             <div
                                                  className="order-articles-item-edit"
                                             >
-                                                <Link to = '/search-date'>Promeni</Link>
+                                                <Link to = {`/search-date/${i}`}>Promeni</Link>
                                             </div>
                                         </div>
                                         {i === 4 && <div className = "order-articles-item-space"></div>}

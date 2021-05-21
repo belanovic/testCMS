@@ -18,8 +18,6 @@ function Provider(props) {
     const [formVisible, setFormVisible] = useState(false);
     const [isLoggedIn, setLoggedIn] = useState(false);
     const [loggedUser, setLoggedUser] = useState('');
-    const [frontpageNews, setFrontpageNews] = useState('');
-    const [reorderedArticles, setreorderedArticles] = useState(''); 
 
     useEffect(() => {
         setLoggedIn((prev) => {
@@ -28,6 +26,7 @@ function Provider(props) {
                 false : true
         })
     }, [])
+
   /*   useEffect(() => {
 
         console.log('User is logged in? ' + isLoggedIn)
@@ -65,11 +64,7 @@ function Provider(props) {
             isLoggedIn,
             setLoggedIn,
             loggedUser,
-            setLoggedUser,
-            frontpageNews, 
-            setFrontpageNews,
-            reorderedArticles, 
-            setreorderedArticles
+            setLoggedUser
 
         }}>
             {props.children}

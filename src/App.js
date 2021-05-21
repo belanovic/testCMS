@@ -26,7 +26,7 @@ export default function App() {
                         <Homepage />
                     </Route>
                     <Route path="/form"><Form /></Route>
-                    <Route path="/order/:option"><Order /></Route>
+                    <Route path="/order"><Order /></Route>
                     <Route path="/search-date"><SearchDate /></Route>
                     <Route path='/allArticles'>
                         <AllArticles />

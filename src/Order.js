@@ -2,14 +2,16 @@ import react, { useState, useEffect, useContext } from 'react';
 import { getFrontpageNews, updateFrontpage } from './getDatabase';
 import { context } from './newsContext.js';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import {Link, useParams} from 'react-router-dom';
+import SearchDate from './SearchDate';
+import {useToggle} from './customHooks.js'
 
 export default function Order() {
 
-    const {option} = useParams();
-   
-    const { reorderedArticles, setreorderedArticles, frontpageNews, setFrontpageNews,
-            setShowHomepageBtn, setAllArticlesBtn, setNewArticleBtn, setShowFrontend } = useContext(context);
+    const [frontpageNews, setFrontpageNews] = useState('');
+    const [reorderedArticles, setreorderedArticles] = useState('');
+    const [arrowUp, setArrowUp] = useToggle();
+
+    const { setShowHomepageBtn, setAllArticlesBtn, setNewArticleBtn, setShowFrontend } = useContext(context);
 
     const onDragEnd = (result) => {
         const { destination, source, reason } = result;
@@ -47,6 +49,20 @@ export default function Order() {
         })
     }
 
+    const handleClickArrow = (e) => {
+        if(e.currentTarget.className.includes('up')) {
+            e.currentTarget.classList.remove('up');
+            e.currentTarget.classList.add('down');
+            e.currentTarget.parentNode.nextElementSibling.classList.remove('show');
+            e.currentTarget.parentNode.nextElementSibling.classList.add('hidden');
+        } else {
+            e.currentTarget.classList.add('up');
+            e.currentTarget.classList.remove('down');
+            e.currentTarget.parentNode.nextElementSibling.classList.add('show');
+            e.currentTarget.parentNode.nextElementSibling.classList.remove('hidden');
+        }
+    }
+
     useEffect(() => {
         setShowHomepageBtn('inline-block');
         setAllArticlesBtn('inline-block');
@@ -55,7 +71,6 @@ export default function Order() {
     })
 
     useEffect(async () => {
-        if(option === 'fromSearch') return;
         const n = await getFrontpageNews();
         setFrontpageNews(n);
         setreorderedArticles(n);
@@ -76,21 +91,35 @@ export default function Order() {
                                             {...provided.draggableProps}
                                             {...provided.dragHandleProps}
                                             key={i} className="order-articles-item"
-                                        >
-                                            <div
-                                                className="order-articles-item-number"
-                                            >{i + 1}.</div>
-                                            <div
-                                                className="order-articles-item-title"
-                                            >{article.title}</div>
-                                            <div
-                                                 className="order-articles-item-edit"
-                                            >
-                                                <Link to = {`/search-date/${i}`}>Promeni</Link>
+                                            
+                                        >   <div className="order-articles-item-elements">
+                                                <div
+                                                    className="order-articles-item-number"
+                                                >{i + 1}.</div>
+                                                <div
+                                                    className="order-articles-item-title"
+                                                >{article.title}</div>
+                                                <div
+                                                    className="order-articles-item-edit"
+                                                    onClick = {handleClickArrow}
+                                                >
+                                                    <i 
+        
+                                                        className= 'fas fa-chevron-down down' 
+                                                        /* className={`fas fa-chevron-down ${arrowUp? 'up' : 'down'}`} */
+                                                    ></i>
+                                                    {/* <i className="fas fa-chevron-up"></i> */}
+                                                </div>
                                             </div>
+                                            <SearchDate
+                                                reorderedArticles={reorderedArticles}
+                                                setreorderedArticles={setreorderedArticles}
+                                                i={i}
+                                        
+                                            />
                                         </div>
-                                        {i === 4 && <div className = "order-articles-item-space"></div>}
-                                        {i === 8 && <div className = "order-articles-item-space"></div>}
+                                            {i === 4 && <div className="order-articles-item-space"></div>}
+                                            {i === 8 && <div className="order-articles-item-space"></div>}
                                         </>
                                     }}
                                 </Draggable>

@@ -1,14 +1,13 @@
 import react, { useState, useEffect, useContext } from 'react';
 import { getByDate } from './getDatabase';
-import {Link, useParams} from 'react-router-dom';
-import {context} from './newsContext';
+import { context } from './newsContext';
 
 const years = [];
 for (let i = 2020; i <= new Date().getFullYear(); i++) {
     years.push(i);
 }
 
-export default function SearchDate() {
+export default function SearchDate({reorderedArticles, setreorderedArticles, i}) {
     const [newsByDate, setNewsByDate] = useState([]);
     const [date, setDate] = useState({});
     const [day, setDay] = useState(new Date().getDate());
@@ -16,8 +15,6 @@ export default function SearchDate() {
     const [year, setYear] = useState(new Date().getFullYear());
     const [selectedArticle, setSelectedArticle] = useState('');
 
-    const {reorderedArticles, setreorderedArticles} = useContext(context);
-    const {index} = useParams();
 
     const handleChange = (e) => {
         let value = e.target.value;
@@ -62,12 +59,16 @@ export default function SearchDate() {
     }
 
     const handleSave = (e) => {
-        console.log(newsByDate)
-        setreorderedArticles((prev) => {
-            let art = prev;
-            art[index] = newsByDate[selectedArticle];
-            return art
-        })
+       
+        let newOrder = Object.assign([], reorderedArticles);
+        newOrder[i] = newsByDate[selectedArticle];
+        console.log(newOrder);
+        setreorderedArticles(newOrder);
+
+        e.currentTarget.parentNode.classList.remove('show')
+        e.currentTarget.parentNode.classList.add('hidden');
+        e.currentTarget.parentNode.previousElementSibling.lastElementChild.classList.remove('up')
+        e.currentTarget.parentNode.previousElementSibling.lastElementChild.classList.add('down')
     }
 
     useEffect(async (prom) => {
@@ -82,59 +83,56 @@ export default function SearchDate() {
     }, [day, month, year])
 
     return (
-
-        <div className="order">
-            <div className="order-date">
-                <div className="order-dateElement">
-                    <label htmlFor="dateInput">Dan</label>
-                    <input
-                        type="number"
-                        name="day"
-                        id="dateInput"
-                        className="dateInput"
-                        value={day}
-                        onChange={handleChange}
-                    ></input>
-                </div>
-                <div className="order-dateElement">
-                    <select onChange={handleSelect} value={month} name="month">
-                        <option className="month-option" value="0">Januar</option>
-                        <option className="month-option" value="1">Februar</option>
-                        <option className="month-option" value="2">Mart</option>
-                        <option className="month-option" value="3">April</option>
-                        <option className="month-option" value="4">Maj</option>
-                        <option className="month-option" value="5">Jun</option>
-                        <option className="month-option" value="6">Jul</option>
-                        <option className="month-option" value="7">Avgust</option>
-                        <option className="month-option" value="8">Septembar</option>
-                        <option className="month-option" value="9">Oktobar</option>
-                        <option className="month-option" value="10">Novembar</option>
-                        <option className="month-option" value="11">Decembar</option>
-                    </select>
-                </div>
-                <div className="order-dateElement">
-                    <select onChange={handleSelect} value={year} name="year">
-                        {years.map((prom, i) => <option className="year-option" key={i} value={prom}>{prom}</option>)}
-                    </select>
-                </div>
-                <div className="order-dateElement">
-                    <button className="order-dateBtn" onClick={handleClick}>Prikaži</button>
-                </div>
-                <select 
-                    className="order-selected-articles"
-                    value = {selectedArticle}
-                    onChange = {handleSelectArticle}
-                >
-                        {newsByDate.map((prom, i) => {
-                            return <option key = {i} value = {i}>
-                                    {prom.title}
-                                </option>
-                        }
-                        )}
+        <div className="order-date hidden">
+            <div className="order-dateElement">
+                {/* <label htmlFor="dateInput">Dan</label> */}
+                <input
+                    type="number"
+                    name="day"
+                    id="dateInput"
+                    className="dateInput"
+                    value={day}
+                    onChange={handleChange}
+                ></input>
+            </div>
+            <div className="order-dateElement">
+                <select onChange={handleSelect} value={month} name="month">
+                    <option className="month-option" value="0">Januar</option>
+                    <option className="month-option" value="1">Februar</option>
+                    <option className="month-option" value="2">Mart</option>
+                    <option className="month-option" value="3">April</option>
+                    <option className="month-option" value="4">Maj</option>
+                    <option className="month-option" value="5">Jun</option>
+                    <option className="month-option" value="6">Jul</option>
+                    <option className="month-option" value="7">Avgust</option>
+                    <option className="month-option" value="8">Septembar</option>
+                    <option className="month-option" value="9">Oktobar</option>
+                    <option className="month-option" value="10">Novembar</option>
+                    <option className="month-option" value="11">Decembar</option>
                 </select>
             </div>
-            <div className = "order-date-save" onClick = {handleSave}>
-                <Link to = "/order/fromSearch">Sačuvaj</Link>
+            <div className="order-dateElement">
+                <select onChange={handleSelect} value={year} name="year">
+                    {years.map((prom, i) => <option className="year-option" key={i} value={prom}>{prom}</option>)}
+                </select>
+            </div>
+            <div className="order-dateElement">
+                <button className="order-dateBtn" onClick={handleClick}>Prikaži</button>
+            </div>
+            <select
+                className="order-selected-articles"
+                value={selectedArticle}
+                onChange={handleSelectArticle}
+            >
+                {newsByDate.map((prom, i) => {
+                    return <option key={i} value={i}>
+                        {prom.title}
+                    </option>
+                }
+                )}
+            </select>
+            <div className="order-date-save" onClick={handleSave}>
+                <button onClick = {handleSave}>Sačuvaj izmenu</button>
             </div>
         </div>
 

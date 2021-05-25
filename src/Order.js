@@ -9,7 +9,7 @@ export default function Order() {
 
     const [frontpageNews, setFrontpageNews] = useState('');
     const [reorderedArticles, setreorderedArticles] = useState('');
-    const [arrowUp, setArrowUp] = useToggle();
+    const [activeArrow, setActiveArrow] = useState('');
 
     const { setShowHomepageBtn, setAllArticlesBtn, setNewArticleBtn, setShowFrontend } = useContext(context);
 
@@ -25,6 +25,13 @@ export default function Order() {
         ) {
             return;
         }
+
+        if(activeArrow !== '' && activeArrow === source.index) {
+            setActiveArrow(destination.index);
+        } else {
+            setActiveArrow('')
+        }
+
 
         const articles = Object.assign([], reorderedArticles);
         const droppedArticle = articles[source.index];
@@ -49,18 +56,12 @@ export default function Order() {
         })
     }
 
-    const handleClickArrow = (e) => {
-        if(e.currentTarget.className.includes('up')) {
-            e.currentTarget.classList.remove('up');
-            e.currentTarget.classList.add('down');
-            e.currentTarget.parentNode.nextElementSibling.classList.remove('show');
-            e.currentTarget.parentNode.nextElementSibling.classList.add('hidden');
-        } else {
-            e.currentTarget.classList.add('up');
-            e.currentTarget.classList.remove('down');
-            e.currentTarget.parentNode.nextElementSibling.classList.add('show');
-            e.currentTarget.parentNode.nextElementSibling.classList.remove('hidden');
+    const handleClickArrow = (e, i) => {
+        if(i === activeArrow) {
+            setActiveArrow('');
+            return
         }
+        setActiveArrow(i);
     }
 
     useEffect(() => {
@@ -92,7 +93,9 @@ export default function Order() {
                                             {...provided.dragHandleProps}
                                             key={i} className="order-articles-item"
                                             
-                                        >   <div className="order-articles-item-elements">
+                                        >   <div 
+                                                className= {`order-articles-item-elements ${activeArrow === i? 'arrowUp' : 'arrowDown'}`}
+                                            >
                                                 <div
                                                     className="order-articles-item-number"
                                                 >{i + 1}.</div>
@@ -100,21 +103,20 @@ export default function Order() {
                                                     className="order-articles-item-title"
                                                 >{article.title}</div>
                                                 <div
-                                                    className="order-articles-item-edit"
-                                                    onClick = {handleClickArrow}
+                                                    className= {`order-articles-item-edit ${activeArrow === i? 'up' : 'down'}`}
+                                                    onClick = {(e) => handleClickArrow(e,i)}
                                                 >
                                                     <i 
-        
-                                                        className= 'fas fa-chevron-down down' 
-                                                        /* className={`fas fa-chevron-down ${arrowUp? 'up' : 'down'}`} */
+                                                        className= "fas fa-chevron-down"
                                                     ></i>
-                                                    {/* <i className="fas fa-chevron-up"></i> */}
                                                 </div>
                                             </div>
                                             <SearchDate
                                                 reorderedArticles={reorderedArticles}
                                                 setreorderedArticles={setreorderedArticles}
                                                 i={i}
+                                                activeArrow = {activeArrow}
+                                                setActiveArrow = {setActiveArrow}
                                         
                                             />
                                         </div>

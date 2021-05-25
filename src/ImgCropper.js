@@ -12,7 +12,6 @@ function generateDownload(canvas, crop, setImgURL, setImgFile, setImgName) {
       const previewUrl = window.URL.createObjectURL(blob);
       
       const file = new File([blob], "image.png");
-
       
       const fileName = Date.now() + '_' + file.name;
       const customURL = URL.createObjectURL(file);

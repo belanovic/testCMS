@@ -14,6 +14,7 @@ import firebase from './firebase.js';
 import { uploadImageDB, removeImageDB } from './handleImageDB';
 import { uploadVideoDB, removeVideoDB } from './handleVideoDB';
 import ImgCropper from './ImgCropper.js';
+import TextEditor from './TextEditor.js';
 
 const storage = firebase.storage();
 
@@ -401,6 +402,11 @@ export default function Article({ setShowCmsOverlay }) {
                 <div className="preview">{paragraphs.map(prom => prom)}</div>
 
                 <Tags tagsArr={tagsArr} setTagsArr={setTagsArr} />
+                <TextEditor 
+                    text = {text} 
+                    setText = {setText}
+                />
+
             </div>
 
             <div className = "article-photo" style = {{display: tabPhotoVisibility}}>

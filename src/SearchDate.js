@@ -7,7 +7,8 @@ for (let i = 2020; i <= new Date().getFullYear(); i++) {
     years.push(i);
 }
 
-export default function SearchDate({reorderedArticles, setreorderedArticles, i}) {
+export default function SearchDate({reorderedArticles, setreorderedArticles, i, 
+                                    activeArrow, setActiveArrow }) {
     const [newsByDate, setNewsByDate] = useState([]);
     const [date, setDate] = useState({});
     const [day, setDay] = useState(new Date().getDate());
@@ -65,10 +66,7 @@ export default function SearchDate({reorderedArticles, setreorderedArticles, i})
         console.log(newOrder);
         setreorderedArticles(newOrder);
 
-        e.currentTarget.parentNode.classList.remove('show')
-        e.currentTarget.parentNode.classList.add('hidden');
-        e.currentTarget.parentNode.previousElementSibling.lastElementChild.classList.remove('up')
-        e.currentTarget.parentNode.previousElementSibling.lastElementChild.classList.add('down')
+        setActiveArrow('')
     }
 
     useEffect(async (prom) => {
@@ -83,7 +81,9 @@ export default function SearchDate({reorderedArticles, setreorderedArticles, i})
     }, [day, month, year])
 
     return (
-        <div className="order-date hidden">
+        <div 
+            className= {`order-date ${activeArrow === i? 'show' : 'hidden'}`}
+        >
             <div className="order-dateElement">
                 {/* <label htmlFor="dateInput">Dan</label> */}
                 <input

@@ -486,13 +486,6 @@ body {
     background: rgb(0, 150, 0);
 }
 
-.order-date.hidden {
-    display: none;
-}
-.order-date.show {
-    display: flex;
-    background: rgb(114, 114, 255);
-}
 .fas.fa-chevron-down {
     transition: transform 0.25s;
     font-size: 1.25rem;
@@ -508,6 +501,22 @@ body {
 .fas.fa-chevron-down:hover {
     cursor: pointer;
     color: red;
+}
+
+
+/* order date */
+
+.order-date.hidden {
+    display: none;
+}
+.order-date.show {
+    display: flex;
+    flex-wrap: wrap;
+    background: rgb(114, 114, 255);
+}
+.order-selected-articles {
+    line-height: 1;
+    flex: 2;
 }
 
 /* Footer */

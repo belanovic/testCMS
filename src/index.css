@@ -422,11 +422,11 @@ body {
     background: linear-gradient(180deg, rgb(69, 70, 69),rgb(90, 90, 106));
 }
 
-.order-articles-item-elements:hover{
-    background: linear-gradient(180deg, rgb(59, 75, 59), rgb(26, 110, 26), rgb(59, 75, 59));
-}
 
 .order-articles-item-elements:active {
+    background: linear-gradient(180deg, rgb(59, 75, 59), rgb(26, 110, 26), rgb(59, 75, 59));
+}
+.order-articles-item-elements:hover{
     background: linear-gradient(180deg, rgb(59, 75, 59), rgb(26, 110, 26), rgb(59, 75, 59));
 }
 

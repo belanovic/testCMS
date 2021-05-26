@@ -496,6 +496,7 @@ body {
 .fas.fa-chevron-down {
     transition: transform 0.25s;
     font-size: 1.25rem;
+    margin-left: 0.5em;
 }
 .order-articles-item-edit.down .fas.fa-chevron-down {
     transform: rotateZ(0deg)

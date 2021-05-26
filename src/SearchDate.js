@@ -7,15 +7,14 @@ for (let i = 2020; i <= new Date().getFullYear(); i++) {
     years.push(i);
 }
 
-export default function SearchDate({reorderedArticles, setreorderedArticles, i, 
-                                    activeArrow, setActiveArrow }) {
-    const [newsByDate, setNewsByDate] = useState([]);
+export default function SearchDate({ reorderedArticles, setreorderedArticles, i,
+    activeArrow, setActiveArrow, setDoubleSelectedArticle, newsByDateAllComp}) {
     const [date, setDate] = useState({});
     const [day, setDay] = useState(new Date().getDate());
     const [month, setMonth] = useState(new Date().getMonth());
     const [year, setYear] = useState(new Date().getFullYear());
-    const [selectedArticle, setSelectedArticle] = useState('');
-
+    const [selectedArticle, setSelectedArticle] = useState(0);
+    const [newsByDate, setNewsByDate] = useState([]);
 
     const handleChange = (e) => {
         let value = e.target.value;
@@ -34,6 +33,7 @@ export default function SearchDate({reorderedArticles, setreorderedArticles, i,
     }
 
     const handleSelect = (e) => {
+        
         const value = e.target.value;
         const name = e.target.name;
         if (name === 'month') {
@@ -46,24 +46,39 @@ export default function SearchDate({reorderedArticles, setreorderedArticles, i,
         }
     }
 
-
     const handleClick = async (e) => {
-        e.preventDefault();
         const result = await getByDate(date);
         setNewsByDate(result);
-        console.log(result)
     }
 
     const handleSelectArticle = (e) => {
+        setDoubleSelectedArticle('');
         const value = e.target.value;
         setSelectedArticle(value);
     }
 
     const handleSave = (e) => {
-       
+        e.stopPropagation();
+        setDoubleSelectedArticle('');
+
+        if(reorderedArticles[i]._id === newsByDate[selectedArticle]._id) return
+        
+        const isAlreadyOrdered = reorderedArticles.some((oneReorderedArticle) => {
+            return oneReorderedArticle._id === newsByDate[selectedArticle]._id
+        })
+
+        if(isAlreadyOrdered) {
+            reorderedArticles.forEach((oneReorderedArticle,i) => {
+                if (oneReorderedArticle._id === newsByDate[selectedArticle]._id) {
+                    setDoubleSelectedArticle(i);
+                }
+            })
+            return
+        }
+        setDoubleSelectedArticle('');
+
         let newOrder = Object.assign([], reorderedArticles);
         newOrder[i] = newsByDate[selectedArticle];
-        console.log(newOrder);
         setreorderedArticles(newOrder);
 
         setActiveArrow('')
@@ -80,12 +95,15 @@ export default function SearchDate({reorderedArticles, setreorderedArticles, i,
         })
     }, [day, month, year])
 
+    useEffect(prom => setNewsByDate(newsByDateAllComp), [newsByDateAllComp])
+
+    
+
     return (
-        <div 
-            className= {`order-date ${activeArrow === i? 'show' : 'hidden'}`}
+        <div
+            className={`order-date ${activeArrow === i ? 'show' : 'hidden'}`}
         >
             <div className="order-dateElement">
-                {/* <label htmlFor="dateInput">Dan</label> */}
                 <input
                     type="number"
                     name="day"
@@ -131,8 +149,8 @@ export default function SearchDate({reorderedArticles, setreorderedArticles, i,
                 }
                 )}
             </select>
-            <div className="order-date-save" onClick={handleSave}>
-                <button onClick = {handleSave}>Sačuvaj izmenu</button>
+            <div className="order-date-save">
+                <button onClick={handleSave}>Sačuvaj izmenu</button>
             </div>
         </div>
 

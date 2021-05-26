@@ -548,6 +548,9 @@ body {
     .order-articles {
         width: 100%;
     }
+    .order-articles-item-elements {
+        font-size: 0.5rem;
+    }
     .order-send-button {
         width: 40%;
     }

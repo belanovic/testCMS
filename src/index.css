@@ -415,6 +415,7 @@ body {
     font-size: 0.75rem;
     font-family: Arial, Helvetica, sans-serif;
     line-height: 1.7;
+    
     padding: 1em 0 1em 0;
     display: flex;
     align-items: center;
@@ -512,11 +513,22 @@ body {
 .order-date.show {
     display: flex;
     flex-wrap: wrap;
-    background: rgb(114, 114, 255);
 }
 .order-selected-articles {
+    overflow: hidden;
     line-height: 1;
-    flex: 2;
+    flex: 2 2 100%;
+    width: 100%;
+    font-size: 1rem;
+    padding: 0.2em 0.5em 0.2em 0.5em;
+
+}
+.order-selected-articles option {
+    width: 100%;
+}
+
+.order-dateElement .dateInput {
+    width: 5em;
 }
 
 /* Footer */

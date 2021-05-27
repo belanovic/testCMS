@@ -513,6 +513,9 @@ body {
 .order-date.show {
     display: flex;
     flex-wrap: wrap;
+    border-left: 5px solid green;
+    border-right: 5px solid green;
+    border-bottom: 5px solid green;
 }
 .order-selected-articles {
     overflow: hidden;
@@ -531,6 +534,18 @@ body {
     width: 5em;
 }
 
+.order-date-save {
+    flex: 2
+}
+.order-date-save button {
+    width: 100%;
+}
+.order-date-display {
+    flex: 2
+}
+.order-date-display button {
+    width: 100%;
+}
 /* Footer */
 
 .footer {

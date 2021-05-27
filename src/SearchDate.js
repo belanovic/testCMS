@@ -115,6 +115,9 @@ export default function SearchDate({ reorderedArticles, setreorderedArticles, i,
                 }
                 )}
             </select>
+            <div className="order-dateElement order-date-display">
+                <button className="order-dateBtn" onClick={handleClick}>Prikaži vesti</button>
+            </div>
             <div className="order-dateElement">
                 <input
                     type="number"
@@ -146,11 +149,8 @@ export default function SearchDate({ reorderedArticles, setreorderedArticles, i,
                     {years.map((prom, i) => <option className="year-option" key={i} value={prom}>{prom}</option>)}
                 </select>
             </div>
-            <div className="order-dateElement">
-                <button className="order-dateBtn" onClick={handleClick}>Prikaži</button>
-            </div>
-            <div className="order-date-save">
-                <button onClick={handleSave}>Sačuvaj izmenu</button>
+            <div className= "order-dateElement order-date-save">
+                <button onClick={handleSave}>Zameni vest</button>
             </div>
         </div>
 

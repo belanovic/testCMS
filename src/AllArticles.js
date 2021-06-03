@@ -5,6 +5,7 @@ import { context } from './newsContext.js';
 import Pagination from './Pagination.js';
 import {DatePublished, DateCreated, DateUpdated} from './Time.js';
 import Publish from './Publish.js';
+import Search from './Search.js';
 
 const NEWS_PER_PAGE = 10;
 
@@ -14,20 +15,20 @@ export default function AllArticles() {
         setShowHomepageBtn, setAllArticlesBtn, setNewArticleBtn, setShowFrontend } = useContext(context);
     const [pageNum, setPageNum] = useState(1);
     const [imgName, setImgName] = useState('');
+    
 
-    useEffect(async function () {
+ /*    useEffect(async function () {
         const allNews = await getAllArticles();
         console.log(allNews);
-        allNews.map((prom) => console.log(/* 'Naslov: ' + prom.title +  */'pozicija: ' + prom.position))
+        allNews.map((prom) => console.log('pozicija: ' + prom.position))
         allNews.map((prom) => console.log('Naslov: ' + prom.title + 'pozicija: ' + prom.position))
         const promiseResolveA = await setListAllArticles(allNews);
         const promiseResolveB = await setListLoaded(true);
-
-    /*     setShowHomepageBtn('inline-block');
-        setAllArticlesBtn('none');
-        setNewArticleBtn('inline-block');
-        setShowFrontend('none'); */
-
+        
+        return () => setListLoaded(false);
+    }, []) */
+    useEffect(async function () {
+       
         return () => setListLoaded(false);
     }, [])
 
@@ -44,6 +45,7 @@ export default function AllArticles() {
         <>
             {listLoaded === true ?
                 <div className="allArticles">
+                    <Search setPageNum = {setPageNum} />
                     <div className = "allArticles-columnNames">
                         <div className = "allArticles-columnNames-title allArticles-columnNames-text">Naslov</div>
                         <div className = "allArticles-columnNames-note allArticles-columnNames-text">Napomena</div>
@@ -63,7 +65,7 @@ export default function AllArticles() {
                                             <h2 className="allArticles-item-title-text">{oneArticle.title}</h2>
                                         </Link>
                                     </div>
-                                    <div className = "allArticles-item-note allArticles-item-part">Ovo je napomena i napomena</div>
+                                    <div className = "allArticles-item-note allArticles-item-part">{oneArticle.note}</div>
                                     <DateCreated timeCreated = {oneArticle.dateCreated}/>
                                     <DateUpdated timeUpdated = {oneArticle.dateUpdated}/>
                                     <DatePublished timePublished = {oneArticle.datePublished} published = {oneArticle.published}/>
@@ -72,7 +74,7 @@ export default function AllArticles() {
 
                                     <div className="allArticles-item-delete allArticles-item-part"> 
                                     {!oneArticle.published && <Link to={`/delete/${oneArticle._id}`}>
-                                        <button>Delete</button>
+                                        <button>Izbriši</button>
                                     </Link>}
                                     </div>
                                 </div>

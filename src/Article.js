@@ -15,6 +15,8 @@ import { uploadImageDB, removeImageDB } from './handleImageDB';
 import { uploadVideoDB, removeVideoDB } from './handleVideoDB';
 import ImgCropper from './ImgCropper.js';
 import TextEditor from './TextEditor.js';
+import Line from './Line';
+import Note from './Note';
 
 const storage = firebase.storage();
 
@@ -24,7 +26,7 @@ export default function Article({ setShowCmsOverlay }) {
     const [tabTextVisibility, setTabTextVisibility] = useState('block')
     const [tabPhotoVisibility, setTabPhotoVisibility] = useState('none')
     const [tabVideoVisibility, setTabVideoVisibility] = useState('none')
-    const [activeTab, setActiveTab]  = useState(1);
+    const [activeTab, setActiveTab] = useState(1);
 
 
     const [frontpageNews, setFrontpageNews] = useState('');
@@ -36,11 +38,13 @@ export default function Article({ setShowCmsOverlay }) {
     const [category, setCategory] = useState('politics');
     const [title, setTitle] = useState('');
     const [text, setText] = useState('');
+    const [initialText, setInitialText] = useState('');
     const [subtitle, setSubtitle] = useState('');
     const [paragraphs, setParagraphs] = useState([]);
     const [author, setAuthor] = useState('');
     const [source, setSource] = useState('');
     const [tagsArr, setTagsArr] = useState(['vesti']);
+    const [note, setNote] = useState('');
 
     const [imgDescription, setImgDescription] = useState('');
     const [deployedImgName, setDeployedImgName] = useState('');
@@ -86,8 +90,10 @@ export default function Article({ setShowCmsOverlay }) {
         const selectedArticle = await getArticle(id);
         setIsNewArticle(false);
         setTitle(selectedArticle.title);
+        setNote(selectedArticle.note);
         setSubtitle(selectedArticle.subtitle);
         setText(selectedArticle.text);
+        setInitialText(selectedArticle.text);
         setParagraphs(selectedArticle.paragraphs);
         setSource(selectedArticle.source);
         setAuthor(selectedArticle.author);
@@ -123,6 +129,7 @@ export default function Article({ setShowCmsOverlay }) {
             published: published,
             position: position,
             title: title,
+            note: note,
             subtitle: subtitle,
             text: text,
             paragraphs: paragraphs,
@@ -248,17 +255,17 @@ export default function Article({ setShowCmsOverlay }) {
     }
     const handleClickTab = (tab) => {
         setActiveTab(tab);
-        const arr = [setTabPublishVisibility, setTabTextVisibility, 
-                    setTabPhotoVisibility, setTabVideoVisibility];
+        const arr = [setTabPublishVisibility, setTabTextVisibility,
+            setTabPhotoVisibility, setTabVideoVisibility];
 
         arr.forEach((prom, i) => {
-            if(tab === i) {
+            if (tab === i) {
                 prom('block')
-            }else {
+            } else {
                 prom('none');
             }
         })
-    }    
+    }
     useEffect(() => {
         findSelectedArticle();
         return () => {
@@ -280,6 +287,10 @@ export default function Article({ setShowCmsOverlay }) {
         setFrontpageNews(n);
 
     }, [])
+    useEffect(async () => {
+        const n = await getFrontpageNews();
+        console.log(text);
+    }, [text])
 
     useEffect(function () {
         setShowHomepageBtn('inline-block');
@@ -293,34 +304,82 @@ export default function Article({ setShowCmsOverlay }) {
             display: contentLoaded ? 'block' : 'none'
         }}>
 
-            <div className = "article-navigation">
-                <div 
-                    className = {`article-navigation-tab ${activeTab === 0? 'active-tab' : ''}`}
-                    onClick = {() => {handleClickTab(0)}}
-                    >Objava</div>
+            <div className="article-navigation">
 
-                <div 
-                    className = {`article-navigation-tab ${activeTab === 1? 'active-tab' : ''}`}
-                    onClick = {() => {handleClickTab(1)}}
-                    >Tekst</div>
+                <div
+                    className={`article-navigation-tab ${activeTab === 1 ? 'active-tab' : ''}`}
+                    onClick={() => { handleClickTab(1) }}
+                >Tekst</div>
 
-                <div 
-                    className = {`article-navigation-tab ${activeTab === 2? 'active-tab' : ''}`}
-                    onClick = {() => {handleClickTab(2)}}
-                    >Fotografija</div>
+                <div
+                    className={`article-navigation-tab ${activeTab === 2 ? 'active-tab' : ''}`}
+                    onClick={() => { handleClickTab(2) }}
+                >Fotografija</div>
 
-                <div 
-                    className = {`article-navigation-tab ${activeTab === 3? 'active-tab' : ''}`}
-                    onClick = {() => {handleClickTab(3)}}
+                <div
+                    className={`article-navigation-tab ${activeTab === 3 ? 'active-tab' : ''}`}
+                    onClick={() => { handleClickTab(3) }}
                 >Video</div>
 
             </div>
 
-            <div className = "article-publish" style = {{display: tabPublishVisibility}}>
-                <div className="publish">
-                    {title !== '' && text !== '' && imgURL !== '' ?
-                        <div>
-                            <button className="saveBtn" onClick={handleSave}>Save</button>
+            <div className="article-content" style={{ display: tabTextVisibility }}>
+                <div className="article-content-container">
+                    <div className="article-text" >
+                        <TextEditor
+                            text={text}
+                            setText={setText}
+                            initialText={initialText}
+                        />
+                    </div>
+
+                    <div className="article-info">
+                        <Title
+                            title={title}
+                            setTitle={setTitle}
+                        />
+                        <Subtitle
+                            subtitle={subtitle}
+                            setSubtitle={setSubtitle}
+                        />
+                        <div className="cathegories">
+                        <label htmlFor="cathegories">Rubrike</label>
+                            <select id="cathegories" value={category} onChange={handleSelect}>
+                                <option value="politics">Politics</option>
+                                <option value="business">Business</option>
+                                <option value="technology">Technology</option>
+                                <option value="entertainment">Entertainment</option>
+                                <option value="sports">Sports</option>
+                            </select>
+                        </div>
+                        <Line />
+                        <div className="source">
+                            <label htmlFor="source">Izvor</label>
+                            <input
+                                id="source"
+                                name="source"
+                                type="text"
+                                value={source}
+                                onChange={inputHandler}
+                            ></input>
+                        </div>
+                        <Line />
+                        <div className="source">
+                            <label htmlFor="author">Autor</label>
+                            <input
+                                id="author"
+                                name="author"
+                                type="text"
+                                value={author}
+                                onChange={inputHandler}
+                            ></input>
+                        </div>
+                        <Line />
+                        <Tags tagsArr={tagsArr} setTagsArr={setTagsArr} />
+                        <Line />
+                        <Note note = {note} setNote = {setNote} />
+                        <Line />
+                        <div className="publish">
                             <label htmlFor="publishCheckbox">Objavljeno</label>
                             <input
                                 id="publishCheckbox"
@@ -331,95 +390,61 @@ export default function Article({ setShowCmsOverlay }) {
                                 onChange={handleCheck}
                             ></input>
                             <input
-                            type="number"
-                            min="0"
-                            max="10"
-                            onChange={handleNumber}
-                            value={position}
-                            style={{ display: showPosition }}
-                        ></input>
+                                type="number"
+                                min="0"
+                                max="10"
+                                onChange={handleNumber}
+                                value={position}
+                                style={{ display: showPosition }}
+                            ></input>
                         </div>
-                        :
-                        <div></div>}              
+                        <Line />
+                        <div className="save">
+                            {title !== '' && text !== '' && imgURL !== '' ?
+                                <button className="saveBtn" onClick={handleSave}>Save</button>
+                                :
+                                ''}
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div className="article-text" style = {{display: tabTextVisibility}}>
-
-                <select className="categories" value={category} onChange={handleSelect}>
-                    <option value="politics">Politics</option>
-                    <option value="business">Business</option>
-                    <option value="technology">Technology</option>
-                    <option value="entertainment">Entertainment</option>
-                    <option value="sports">Sports</option>
-                </select>
-
-                <label htmlFor="source">Izvor</label>
-                <input
-                    id="source"
-                    name="source"
-                    type="text"
-                    value={source}
-                    onChange={inputHandler}
-                ></input>
-                <label htmlFor="author">Autor</label>
-                <input
-                    id="author"
-                    name="author"
-                    type="text"
-                    value={author}
-                    onChange={inputHandler}
-                ></input>
-                <label htmlFor="imgDescription">Opis fotografije</label>
-                <input
-                    id="imgDescription"
-                    name="imgDescription"
-                    type="text"
-                    value={imgDescription}
-                    onChange={inputHandler}
-                ></input>
-                <label htmlFor="videoDescription">Opis video-snimka</label>
-                <input
-                    id="videoDescription"
-                    name="videoDescription"
-                    type="text"
-                    value={videoDescription}
-                    onChange={inputHandler}
-                ></input>
-
-                <Title
-                    title={title}
-                    setTitle={setTitle}
-                />
-                <Subtitle
-                    subtitle={subtitle}
-                    setSubtitle={setSubtitle}
-                />
-                <Textarea
-                    text={text}
-                    setText={setText}
-                />
-                <div className="preview">{paragraphs.map(prom => prom)}</div>
-
-                <Tags tagsArr={tagsArr} setTagsArr={setTagsArr} />
-                <TextEditor 
-                    text = {text} 
-                    setText = {setText}
-                />
-
-            </div>
-
-            <div className = "article-photo" style = {{display: tabPhotoVisibility}}>
+            <div className="article-photo" style={{ display: tabPhotoVisibility }}>
+                <div className="imgDescription">
+                    <label htmlFor="imgDescription">Opis fotografije</label>
+                    <input
+                        id="imgDescription"
+                        name="imgDescription"
+                        type="text"
+                        value={imgDescription}
+                        onChange={inputHandler}
+                    ></input>
+                </div>
                 <Photo
                     imgURL={imgURL}
                     setImgURL={setImgURL}
                     setImgName={setImgName}
                     setImgFile={setImgFile}
                 />
-                <ImgCropper setImgURL={setImgURL} setImgFile={setImgFile} setImgName={setImgName} />
+
+                <ImgCropper
+                    setImgURL={setImgURL}
+                    setImgFile={setImgFile}
+                    setImgName={setImgName}
+                />
             </div>
 
-            <div className = "article-video" style = {{display: tabVideoVisibility}}>
+            <div className="article-video" style={{ display: tabVideoVisibility }}>
+                <div className="videoDescription">
+                    <label htmlFor="videoDescription">Opis video-snimka</label>
+                    <input
+                        id="videoDescription"
+                        name="videoDescription"
+                        type="text"
+                        value={videoDescription}
+                        onChange={inputHandler}
+                    ></input>
+                </div>
                 <Video
                     videoURL={videoURL}
                     setVideoURL={setVideoURL}

@@ -38,7 +38,7 @@ export default function Tags({tagsArr, setTagsArr}) {
                 onChange = {handleChange}
                 onKeyDown = {handleKeyDown}
                 value = {inputValue}
-            ></input>
+            ></input><button>Zapamti tag</button>
 
             <div className = "tags-row">
                 {tagsArr && tagsArr.map((prom, i) => {

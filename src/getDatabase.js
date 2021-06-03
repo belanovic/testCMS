@@ -29,7 +29,7 @@ export async function getArticle(id) {
         console.log(err);
     }
 }
-export async function postArticle({id, title, subtitle, text, paragraphs, imgURL, imgName, tagsArr,
+export async function postArticle({id, title, subtitle, text, paragraphs, note, imgURL, imgName, tagsArr,
                                 dateUpdated, dateCreated, datePublished, videoURL, videoName,
                                 category, position, published, videoDescription, imgDescription, author, source}) {
     try {
@@ -43,6 +43,7 @@ export async function postArticle({id, title, subtitle, text, paragraphs, imgURL
                 subtitle: subtitle,
                 text: text,
                 paragraphs: paragraphs,
+                note: note,
                 imgURL: imgURL,
                 imgName: imgName,
                 videoURL: videoURL,
@@ -68,7 +69,7 @@ export async function postArticle({id, title, subtitle, text, paragraphs, imgURL
     }
 }
 
-export async function updateArticle({id, title, subtitle, text,  paragraphs,
+export async function updateArticle({id, title, subtitle, text,  paragraphs, note,
                                     imgURL, imgName, videoURL, videoName, position, 
                                     category, published, datePublished, tagsArr,
                                     imgDescription, videoDescription, author, source}) {
@@ -83,6 +84,7 @@ export async function updateArticle({id, title, subtitle, text,  paragraphs,
                 subtitle: subtitle,
                 text: text,
                 paragraphs: paragraphs,
+                note: note,
                 imgURL: imgURL,
                 imgName: imgName,
                 videoURL: videoURL,

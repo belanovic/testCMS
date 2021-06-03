@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Editor } from '@tinymce/tinymce-react'
 
 
-export default function TextEditor({text, setText}) {
+export default function TextEditor({text, setText, initialText}) {
    const editorRef = useRef(null);
    const log = () => {
      if (editorRef.current) {
@@ -11,13 +11,16 @@ export default function TextEditor({text, setText}) {
      }
    };
    return (
-     <>
+     <div className = "article-text-editor">
        <Editor
          apiKey='k10ugi99nbqf3vnnmg9v5jbab20edd17l0663x8zqtdz04nl'
          onInit={(evt, editor) => editorRef.current = editor}
-         initialValue = {text}
+         initialValue = {initialText}
+         onEditorChange= {log}
          init={{
-           height: 500,
+           onChange: log,
+           height: '75vh',
+           auto_focus : "itinymce",
            menubar: false,
            paste_data_images: true,
            plugins: [
@@ -37,7 +40,7 @@ export default function TextEditor({text, setText}) {
            
          }}
        />
-       <button onClick={log}>Log editor content</button>
-     </>
+      {/*  <button onClick={log}>Log editor content</button> */}
+      </div>
    );
  }

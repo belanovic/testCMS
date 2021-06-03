@@ -27,7 +27,7 @@ export default function Publish({ id, published }) {
             <button 
                 onClick = {handleClick}
                 style = {{display: !published? 'block' : 'none' }}
-            >Publish</button>
+            >Objavi</button>
         </div>
     )
 }

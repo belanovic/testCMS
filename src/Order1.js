@@ -46,12 +46,13 @@ export default function Order() {
         const idAndPositionArr = reorderedArticles.map((prom, i) => {
             const idAndPosition = {
                 id: prom._id,
-                newPosition: i + 1
+                position: i + 1
             }
             return idAndPosition
 
         })
         const updatedFrontpage = await updateFrontpage(idAndPositionArr);
+     
         /* updatedFrontpage.sort((a, b) => a.position - b.position).forEach((prom) => {
             if (prom.position > 0) console.log(prom.title)
         }) */

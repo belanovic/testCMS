@@ -11,22 +11,12 @@ const NEWS_PER_PAGE = 10;
 
 export default function AllArticles() {
 
-    const { listAllArticles, setListAllArticles, listLoaded, setListLoaded,
-        setShowHomepageBtn, setAllArticlesBtn, setNewArticleBtn, setShowFrontend } = useContext(context);
+    const { listAllArticles, setListAllArticles, listLoaded, setListLoaded, 
+        setShowHomepageBtn, 
+        setAllArticlesBtn, setNewArticleBtn, setShowFrontend } = useContext(context);
     const [pageNum, setPageNum] = useState(1);
     const [imgName, setImgName] = useState('');
     
-
- /*    useEffect(async function () {
-        const allNews = await getAllArticles();
-        console.log(allNews);
-        allNews.map((prom) => console.log('pozicija: ' + prom.position))
-        allNews.map((prom) => console.log('Naslov: ' + prom.title + 'pozicija: ' + prom.position))
-        const promiseResolveA = await setListAllArticles(allNews);
-        const promiseResolveB = await setListLoaded(true);
-        
-        return () => setListLoaded(false);
-    }, []) */
     useEffect(async function () {
        
         return () => setListLoaded(false);

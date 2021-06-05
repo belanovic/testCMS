@@ -5,15 +5,16 @@ import { getAllArticles, getByCategory } from './getDatabase';
 export default function Search({ setPageNum }) {
 
     
-    const { listAllArticles, setListAllArticles,
-        listLoaded, setListLoaded } = useContext(context);
+    const { listAllArticles, setListAllArticles, defaultCathegory, setDefaultCathegory,
+        listLoaded, setListLoaded, shouldLoadArticles } = useContext(context);
 
-    const [cathegory, setCathegory] = useState('allArticles');
+    const [cathegory, setCathegory] = useState(defaultCathegory);
 
     const handleSelect = (e) => {
         const option = e.target.value;
         console.log(option);
         setCathegory(option);
+        setDefaultCathegory(option);
     }
 
     const handleClick = async (e) => {
@@ -32,8 +33,21 @@ export default function Search({ setPageNum }) {
             const promiseResolveB = await setListLoaded(true);
             setPageNum(1);
         }
-
     }
+
+    useEffect(async () => {
+        if (cathegory === 'allArticles') {
+            const allNews = await getAllArticles();
+            const promiseResolveA = await setListAllArticles(allNews);
+            const promiseResolveB = await setListLoaded(true);
+            setPageNum(1)
+        } else {
+            const allNews = await getByCategory(cathegory);
+            const promiseResolveA = await setListAllArticles(allNews);
+            const promiseResolveB = await setListLoaded(true);
+            setPageNum(1);
+        }
+    }, [])
 
     return (
         <div className="search">

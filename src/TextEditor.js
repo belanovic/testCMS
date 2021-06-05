@@ -18,7 +18,6 @@ export default function TextEditor({text, setText, initialText}) {
          initialValue = {initialText}
          onEditorChange= {log}
          init={{
-           onChange: log,
            height: '75vh',
            auto_focus : "itinymce",
            menubar: false,
@@ -40,7 +39,7 @@ export default function TextEditor({text, setText, initialText}) {
            
          }}
        />
-      {/*  <button onClick={log}>Log editor content</button> */}
+       {/* <button onClick={log}>Log editor content</button> */}
       </div>
    );
  }

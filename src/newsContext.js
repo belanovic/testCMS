@@ -18,6 +18,7 @@ function Provider(props) {
     const [formVisible, setFormVisible] = useState(false);
     const [isLoggedIn, setLoggedIn] = useState(false);
     const [loggedUser, setLoggedUser] = useState('');
+    const [defaultCathegory, setDefaultCathegory] = useState('allArticles');
 
     useEffect(() => {
         setLoggedIn((prev) => {
@@ -64,7 +65,9 @@ function Provider(props) {
             isLoggedIn,
             setLoggedIn,
             loggedUser,
-            setLoggedUser
+            setLoggedUser,
+            defaultCathegory,
+            setDefaultCathegory
 
         }}>
             {props.children}

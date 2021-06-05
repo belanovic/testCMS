@@ -8,11 +8,11 @@ function generateDownload(canvas, crop, setImgURL, setImgFile, setImgName) {
   }
 
   canvas.toBlob(
-    (blob) => {
+    async (blob) => {
       const previewUrl = window.URL.createObjectURL(blob);
-      
+
       const file = new File([blob], "image.png");
-      
+
       const fileName = Date.now() + '_' + file.name;
       const customURL = URL.createObjectURL(file);
       /* 
@@ -24,20 +24,20 @@ function generateDownload(canvas, crop, setImgURL, setImgFile, setImgName) {
       setImgName(fileName);
       setImgFile(file);
 
-      
-      const anchor = document.createElement('a');
-      anchor.download = 'cropPreview.png';
-      anchor.href = URL.createObjectURL(blob);
-      anchor.click();
 
-      window.URL.revokeObjectURL(previewUrl);
+      /*  const anchor = document.createElement('a');
+       anchor.download = 'cropPreview.png';
+       anchor.href = URL.createObjectURL(blob);
+       anchor.click();
+ 
+       window.URL.revokeObjectURL(previewUrl); */
     },
     'image/png',
     1
   );
 }
 
-export default function ImgCropper({setImgURL, setImgFile, setImgName}) {
+export default function ImgCropper({ setImgURL, setImgFile, setImgName }) {
   const [upImg, setUpImg] = useState();
   const imgRef = useRef(null);
   const previewCanvasRef = useRef(null);
@@ -90,8 +90,21 @@ export default function ImgCropper({setImgURL, setImgFile, setImgName}) {
   }, [completedCrop]);
 
   return (
-    <div className="App imgCropper">
-      <div className = "imgContainer"> 
+    <div className="imgCropper">
+      <button
+        className = "crop-btn"
+        type="button"
+        disabled={!completedCrop?.width || !completedCrop?.height}
+        onClick={() =>
+          generateDownload(previewCanvasRef.current, completedCrop, setImgURL, setImgFile, setImgName)
+        }
+      >
+        Kropuj fotografiju
+      </button>
+      <div className="imgContainer">
+        <div>
+          <input type="file" accept="image/*" onChange={onSelectFile} />
+        </div>
         <ReactCrop
           src={upImg}
           onImageLoaded={onLoad}
@@ -99,7 +112,7 @@ export default function ImgCropper({setImgURL, setImgFile, setImgName}) {
           onChange={(c) => setCrop(c)}
           onComplete={(c) => setCompletedCrop(c)}
         />
-        <div>
+        <div className="previewCanvas">
           <canvas
             ref={previewCanvasRef}
             style={{
@@ -109,18 +122,6 @@ export default function ImgCropper({setImgURL, setImgFile, setImgName}) {
           />
         </div>
       </div>
-      <div>
-        <input type="file" accept="image/*" onChange={onSelectFile} />
-      </div>
-      <button
-        type="button"
-        disabled={!completedCrop?.width || !completedCrop?.height}
-        onClick={() =>
-          generateDownload(previewCanvasRef.current, completedCrop, setImgURL, setImgFile, setImgName)
-        }
-      >
-        Download cropped image
-      </button>
     </div>
   );
 }

@@ -7,11 +7,7 @@ body {
     margin: 0;
     height: 100vh;
 }
-#root {
-    height: 100%;
-}
 .cms {
-    height: 100%;
     display: flex;
     flex-direction: column;
 }
@@ -24,9 +20,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgb(133, 1, 1);
+    background: linear-gradient(180deg, rgb(133, 1, 1), rgb(216, 0, 0) );
     padding: 0.7em 1em 0.7em 1em;
-    margin-bottom: 0.5em;
 }
 
 .header-links-frontend a {
@@ -50,6 +45,8 @@ body {
 .header-title-text {
     font-size: 3rem;
     color: white;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    letter-spacing: 2px
 }
 
 .header-links {
@@ -71,7 +68,7 @@ body {
 }
 
 .header-homepageBtn-text, .header-allArticlesBtn-text, .header-newArticleBtn-text {
-    font-size: 1.5rem;
+    font-size: 1.175rem;
     color: white;
     text-align: center;
     padding: 0.2em 1em 0.2em 1em;
@@ -189,7 +186,8 @@ body {
     margin: auto;
     display: flex;
     justify-content: space-around;
-    margin-top: 12em;
+    margin-top: 15em;
+    margin-bottom: 25em;
 }
 .homepage-newArticleBtn, .homepage-allArticlesBtn, .homepage-frontpage-order {
     flex: 0 0 30%;
@@ -231,6 +229,10 @@ body {
     display: flex;
     justify-content: center;
     font-size: 1.5rem;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    background: rgb(160, 160, 160);
+    background: linear-gradient(180deg, rgb(102, 102, 102), rgb(151, 151, 151))
 }
 .article-navigation-tab {
     margin-right: 1em;
@@ -241,17 +243,17 @@ body {
 }
 
 .active-tab {
-    color: green;
+    color: white;
 
 }
 .article-content-container {
     display: flex;
+    padding: 2em;
 }
-.article-text {
-    padding: 1em;
-}
+
 .article-text-editor {
     width: 40vw;
+    margin-right: 2em;
 }
 
 .article-text-title {
@@ -262,6 +264,8 @@ body {
 .article-text-title .title-input {
     width: 100%;
     padding: 0.3em 0.3em 0.3em 0.3em;
+    font-size: 1.25rem;
+    font-weight: bold;
 }
 .article-text-subtitle {
     width: 100%;
@@ -270,16 +274,17 @@ body {
 .article-text-subtitle .subtitle-textarea {
     width: 100%;
     height: 7em;
+    font-size: 1rem;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
     margin-bottom: 0.3em;
     padding: 0.5em;
     resize: none;
     line-height: 1.4;
-    font-family: Arial, Helvetica, sans-serif;
 }
 
 .article-info {
     flex: 2;
-    padding: 1em;
 }
 
 .article-info label, .article-info input, .article-info select {
@@ -322,27 +327,63 @@ body {
     background: yellow;
 }
 
+/* Image */
+
+.article-photo {
+    padding-top: 6em;
+}
+.article-photo-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15em;
+}
+
+.article-photo-img {
+    width: 620px;
+}
+.imgDescription {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 4em;
+    padding: 1em;
+}
+.imgDescription label {
+    margin-right: 1em;
+}
+.imgDescription input {
+    padding: 0.2em 0.5em 0.2em 0.5em;
+    width: 40em;
+}
+
 /* Image cropper */
 
 .imgCropper {
-    border: 2px solid red;
-}
-
-.imgContainer {
     display: flex;
-    justify-content: space-between;
+    align-items: flex-start;
 }
 
-.imgContainer > * {
-    width: 48% !important
+.crop-btn {
+    margin-right: 1em;
+    margin-left: 1em;
+    font-size: 1rem;
+    padding: 0.1em 0.3em 0.1em 0.3em;
 }
+.crop-btn:hover {
+    cursor: pointer;
+}
+
 
 .ReactCrop div {
-    width: 100%;
+    width: 620px;
 }
 
 .ReactCrop div img {
     width: 100%;
+}
+
+.previewCanvas {
+    display: none;
 }
 
 /* Video */
@@ -351,15 +392,6 @@ body {
     border: 2px solid red;
 }
 
-/* Image */
-
-.img-container {
-    border: 2px solid red;
-}
-
-.img {
-    max-width: 600px;
-}
 /* ========== All articles ========== */
 
 .allArticles {
@@ -399,7 +431,7 @@ body {
 .allArticles-item {
     flex: 1;
     display: flex;
-    background: linear-gradient(180deg, rgb(69, 70, 69),rgb(90, 90, 106));
+    background: linear-gradient(180deg, rgb(69, 70, 69), rgb(90, 90, 106));
     color: white;
 }
 
@@ -429,7 +461,7 @@ body {
     color: white;
 }
 .allArticles-item-title-text {
-    margin: 0 0.5em 0 0.5em;
+    margin: 1.5em 0.5em 1.5em 0.5em;
     font-size: 1.175rem;
     line-height: 1.5;
     font-weight: normal;
@@ -463,13 +495,13 @@ body {
 .allArticles-item-note {
      padding: 0.4em;
 }
-
+/* 
 .allArticles-item-lastPage {
     flex: 0;
 }
 .allArticles-item-lastPage .allArticles-item-title-text {
     padding: 0.3em 0 0.3em 0; 
-}
+} */
 
 /* ========== Order ========= */
 
@@ -662,6 +694,13 @@ body {
 .tag .fa-times:hover {
     cursor: pointer;
     color: rgb(139, 0, 0);
+}
+
+/* Pagination */
+
+.pagination {
+    display: flex;
+    justify-content: center;
 }
 
 /* Footer */

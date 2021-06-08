@@ -431,11 +431,6 @@ export default function Article({ setShowCmsOverlay }) {
                     setImgFile={setImgFile}
                 />
 
-                <ImgCropper
-                    setImgURL={setImgURL}
-                    setImgFile={setImgFile}
-                    setImgName={setImgName}
-                />
             </div>
 
             <div className="article-video" style={{ display: tabVideoVisibility }}>

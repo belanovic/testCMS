@@ -13,9 +13,11 @@ import Video from './Video.js';
 import firebase from './firebase.js';
 import { uploadImageDB, removeImageDB } from './handleImageDB';
 import { uploadVideoDB, removeVideoDB } from './handleVideoDB';
+import ImgCropper from './ImgCropper.js';
 import TextEditor from './TextEditor.js';
 import Line from './Line';
 import Note from './Note';
+import Scraper from './Scraper';
 
 const storage = firebase.storage();
 
@@ -65,7 +67,7 @@ export default function Article({ setShowCmsOverlay }) {
         listLoaded, setListLoaded,
         articleImgLoaded, setArticleImgLoaded, setShowFrontend,
         setShowHomepageBtn, setAllArticlesBtn, setNewArticleBtn,
-        articleDataLoaded, setArticleDataLoaded,
+        articleDataLoaded, setArticleDataLoaded
     } = useContext(context);
 
     let contentLoaded = articleDataLoaded === true && articleImgLoaded === true;
@@ -267,7 +269,6 @@ export default function Article({ setShowCmsOverlay }) {
     }
     useEffect(() => {
         findSelectedArticle();
-
         return () => {
             setArticleImgLoaded(false);
             /*  setArticleVideoLoaded(false); */
@@ -343,7 +344,7 @@ export default function Article({ setShowCmsOverlay }) {
                             setSubtitle={setSubtitle}
                         />
                         <div className="cathegories">
-                            <label htmlFor="cathegories">Rubrike</label>
+                        <label htmlFor="cathegories">Rubrike</label>
                             <select id="cathegories" value={category} onChange={handleSelect}>
                                 <option value="politics">Politics</option>
                                 <option value="business">Business</option>
@@ -377,7 +378,7 @@ export default function Article({ setShowCmsOverlay }) {
                         <Line />
                         <Tags tagsArr={tagsArr} setTagsArr={setTagsArr} />
                         <Line />
-                        <Note note={note} setNote={setNote} />
+                        <Note note = {note} setNote = {setNote} />
                         <Line />
                         <div className="publish">
                             <label htmlFor="publishCheckbox">Objavljeno</label>
@@ -397,8 +398,11 @@ export default function Article({ setShowCmsOverlay }) {
                                 value={position}
                                 style={{ display: showPosition }}
                             ></input>
-                        </div>
+                        </div> 
                         <Line />
+                        <Scraper setTitle = {setTitle} setSubtitle = {setSubtitle} setInitialText = {setInitialText} />
+                        <Line />
+
                         <div className="save">
                             {title !== '' && text !== '' && imgURL !== '' ?
                                 <button className="saveBtn" onClick={handleSave}>Save</button>
@@ -409,15 +413,30 @@ export default function Article({ setShowCmsOverlay }) {
                 </div>
             </div>
 
-            <Photo
-                tabPhotoVisibility={tabPhotoVisibility}
-                imgDescription = {imgDescription}
-                inputHandler = {inputHandler}
-                imgURL={imgURL}
-                setImgURL={setImgURL}
-                setImgName={setImgName}
-                setImgFile={setImgFile}
-            />
+            <div className="article-photo" style={{ display: tabPhotoVisibility }}>
+                <div className="imgDescription">
+                    <label htmlFor="imgDescription">Opis fotografije</label>
+                    <input
+                        id="imgDescription"
+                        name="imgDescription"
+                        type="text"
+                        value={imgDescription}
+                        onChange={inputHandler}
+                    ></input>
+                </div>
+                <Photo
+                    imgURL={imgURL}
+                    setImgURL={setImgURL}
+                    setImgName={setImgName}
+                    setImgFile={setImgFile}
+                />
+
+                <ImgCropper
+                    setImgURL={setImgURL}
+                    setImgFile={setImgFile}
+                    setImgName={setImgName}
+                />
+            </div>
 
             <div className="article-video" style={{ display: tabVideoVisibility }}>
                 <div className="videoDescription">

@@ -225,3 +225,22 @@ export async function publishArticle(id) {
         console.log(err)
     }
 }
+
+export async function scrape(url) {
+    try {
+        const response = await fetch(`${HOST_BACKEND}/scraper`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'text/plain'
+            },
+            body: JSON.stringify({
+                url: url
+            })
+        })
+        const scrapedArticle = await response.json();
+        return scrapedArticle
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
